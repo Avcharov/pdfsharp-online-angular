@@ -1,0 +1,44 @@
+{
+    "WELCOME": {
+      "HEADER": "The Easiest way to edit PDF and study PdfSharp",
+      "SUBHEADER": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur",
+      "PREVIEW": "Preview",
+      "GET_STARTED": "Get started",
+      "ABOUT": "About"
+    },
+    "LOGIN": {
+      "HEADER": "Log in",
+      "POPUP": {
+        "EMAIL": "Email",
+        "PASSWORD": "Password",
+        "CREATE_NEW": "Create new",
+        "SUBMIT": "Submit",
+        "OR": "or"
+      }
+    },
+    "PDF": {
+      "SIDEBAR": {
+        "TEXT": "Text",
+        "IMAGES": "Images"
+      },
+      "BUTTON": {
+        "ADD_TEXT": "Add Text",
+        "ADD_IMAGE": "Add Image"
+      },
+      "ITEM": {
+        "X": "X",
+        "Y": "Y",
+        "ROTATION": "Rotation",
+        "FONT_SIZE": "Font Size",
+        "OPACITY": "Opacity"
+      },
+      "ADD_IMAGE_POPUP": {
+        "DROP_ZONE": "Drop files here",
+        "HERE": "here",
+        "DRAG_ATTACHMENTS_MESSAGE_WARNING": "Drag one attachment to add it or click",
+        "ADD_IMAGE": "Add Image",
+        "FILE": "File",
+        "UPLOAD": "Upload"
+      }
+    }
+  }
