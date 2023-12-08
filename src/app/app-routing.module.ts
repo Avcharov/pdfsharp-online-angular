@@ -8,6 +8,11 @@ const routes: Routes = [
       import('./features/welcome/welcome.module').then((m) => m.WelcomeModule),
   },
   {
+    path: 'editor',
+    loadChildren: () =>
+      import('./features/pdf-edit/pdf-edit.module').then((m) => m.PdfEditModule),
+  },
+  {
     path: '',
     redirectTo: 'welcome',
     pathMatch: 'full',

@@ -1,0 +1,36 @@
+<div class="item">
+  <div class="item__header">
+      <h4 class="item__header-text">{{ item.name }}</h4>
+      <div class="item__header-buttons">
+          <button class="item__header-button item__header-button--trash" (click)="deleteItem">
+              <!-- <fa :icon="['fa', 'trash']" size="lg" /> -->
+          </button>
+          <button class="item__header-button item__header-button--chevron" (click)="toggleItem">
+              <!-- <fa v-if="item.isHidden" :icon="['fa', 'chevron-down']" size="lg" />
+              <fa v-else :icon="['fa', 'chevron-up']" size="lg" /> -->
+          </button>
+      </div>
+  </div>
+  <div class="item__body" :hidden="item.isHidden">
+      <div class="item__body-property">
+          <p class="item__body-property-name"> {{ "PDF.ITEM.X" | translate }} </p>
+          <input class="item__body-property-value" type="number" [(ngModel)]="item.xPos"/>
+      </div>
+      <div class="item__body-property">
+          <p class="item__body-property-name"> {{ "PDF.ITEM.Y" | translate }} </p>
+          <input class="item__body-property-value" type="number" [(ngModel)]="item.yPos"/>
+      </div>
+      <div class="item__body-property">
+          <p class="item__body-property-name"> {{ "PDF.ITEM.ROTATION" | translate }} </p>
+          <input class="item__body-property-value" type="number" [(ngModel)]="item.rotation"/>
+      </div>
+      <div class="item__body-property" *ngIf="isTextItem">
+          <p class="item__body-property-name"> {{ "PDF.ITEM.FONT_SIZE" | translate }} </p>
+          <input class="item__body-property-value" type="number" [(ngModel)]="$any(item).fontSize"/>
+      </div>
+      <div class="item__body-property" *ngIf="isImageItem">
+          <p class="item__body-property-name"> {{ "PDF.ITEM.OPACITY" | translate }} </p>
+          <input class="item__body-property-value" type="number" [(ngModel)]="$any(item).opacity"/>
+      </div>
+  </div>
+</div>
