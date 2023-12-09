@@ -1,37 +1,37 @@
-import { Component, Input, OnInit } from '@angular/core';
-import ImageItem from 'src/app/features/pdf-edit/models/image-item.model';
-import { Item } from 'src/app/features/pdf-edit/models/item';
-import TextItem from 'src/app/features/pdf-edit/models/text-item.model';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ImageItem,
+  Item,
+  TextItem,
+} from 'src/app/features/pdf-edit/models/item';
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
-  styleUrls: ['./item.component.scss']
+  styleUrls: ['./item.component.scss'],
 })
 export class ItemComponent implements OnInit {
+  @Input() item!: Item;
 
-  @Input() item! : Item;
+  @Output() deleteItemEvent = new EventEmitter<number>();
 
-  get isTextItem(): boolean {
-    return this.item instanceof TextItem;
+  isTextItem(item: Item): item is TextItem {
+    return 'fontSize' in item;
   }
 
-  get isImageItem() {
-    return this.item instanceof ImageItem;
+  isImageItem(item: Item): item is ImageItem {
+    return 'opacity' in item;
   }
+  
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 
   toggleItem() {
-
+    this.item.isHidden = !this.item.isHidden;
   }
 
   deleteItem() {
-
+    this.deleteItemEvent.emit(this.item.id);
   }
-
 }

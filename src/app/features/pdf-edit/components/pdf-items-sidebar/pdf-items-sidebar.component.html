@@ -1,13 +1,15 @@
-  <div class="pdf-items-sidebar">
-    <app-select
+<div class="pdf-items-sidebar">
+  <app-select
     [name]="'PDF.SIDEBAR.IMAGES'"
     [addItemText]="'PDF.BUTTON.ADD_TEXT'"
-    [items]="imageItems"
-    ></app-select>
-    <app-select
+    [items]="textItems"
+    (deleteItemEvent)="deleteTextItem($event)"
+  ></app-select>
+  <app-select
     [name]="'PDF.SIDEBAR.TEXT'"
     [addItemText]="'PDF.BUTTON.ADD_IMAGE'"
-    [items]="textItems"
-    ></app-select>
-    <app-button>Add Image</app-button>
-  </div>
+    [items]="imageItems"
+    (deleteItemEvent)="deleteImageItem($event)"
+  ></app-select>
+  <app-button>Add Image</app-button>
+</div>

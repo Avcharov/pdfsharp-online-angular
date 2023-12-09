@@ -1,4 +1,4 @@
-button {
+.button {
     padding: 8px 18px;
     border-radius: 10px;
     border: none;
@@ -11,9 +11,6 @@ button {
     &:hover {
         background-color: #3b3b3b;
     }
-}
-
-.button {
     &_green {
         button {
             background-color: #9742d3;

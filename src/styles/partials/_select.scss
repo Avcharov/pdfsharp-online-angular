@@ -1,7 +1,9 @@
-app-select {
-    :not(:first-child) {
-        margin-top: 10px;
-    }
+app-select:not(:first-child) {
+    margin-top: 10px;
+}
+
+app-select{
+    display: block;
 }
 
 .select {
@@ -11,6 +13,7 @@ app-select {
         border-radius: 8px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         &-text {
             color: #fff;

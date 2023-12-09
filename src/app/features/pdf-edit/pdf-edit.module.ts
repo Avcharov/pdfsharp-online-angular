@@ -5,12 +5,21 @@ import { PdfEditRoutingModule } from './pdf-edit.routing';
 import { PdfItemsSidebarComponent } from './components/pdf-items-sidebar/pdf-items-sidebar.component';
 import { AddImagePopupComponent } from './components/add-image-popup/add-image-popup.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { PDF_EDIT_ACTION_KEY } from './store/pdf-edit.store';
+import { pdfEditReducer } from './store/pdf-edit.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { PdfEditEffects } from './store/pdf-edit.effects';
 
 @NgModule({
   imports: [
     CommonModule,
     PdfEditRoutingModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forRoot({}),
+    StoreModule.forFeature(PDF_EDIT_ACTION_KEY, pdfEditReducer),
+    EffectsModule.forRoot([]),
+    EffectsModule.forFeature([PdfEditEffects]),
   ],
   declarations: [PdfEditPageComponent, PdfItemsSidebarComponent, AddImagePopupComponent]
 })

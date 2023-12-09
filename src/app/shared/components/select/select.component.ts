@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Item } from 'src/app/features/pdf-edit/models/item';
 
 @Component({
@@ -13,6 +13,7 @@ export class SelectComponent implements OnInit {
   @Input() isSelectOpen = true;
   @Input() items = <Item[]>[];
 
+  @Output() deleteItemEvent = new EventEmitter<number>();
 
   constructor() { }
 
@@ -28,6 +29,6 @@ export class SelectComponent implements OnInit {
   }
 
   deleteItem(itemId: number){
-
+    this.deleteItemEvent.emit(itemId);
   }
 }
