@@ -15,8 +15,9 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
+            "allowedCommonJsDependencies": ["pdfjs-dist"],
             "outputPath": "dist/pdfsharp-online",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -35,8 +36,7 @@
               "includePaths": [
                 "src/styles"
               ]
-            },
-            "scripts": []
+            }
           },
           "configurations": {
             "production": {

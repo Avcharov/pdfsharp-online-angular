@@ -10,7 +10,7 @@ import { PDF_EDIT_ACTION_KEY } from './store/pdf-edit.store';
 import { pdfEditReducer } from './store/pdf-edit.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { PdfEditEffects } from './store/pdf-edit.effects';
-
+import { PdfEditorViewComponent } from './components/pdf-editor-view/pdf-editor-view.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,6 +21,6 @@ import { PdfEditEffects } from './store/pdf-edit.effects';
     EffectsModule.forRoot([]),
     EffectsModule.forFeature([PdfEditEffects]),
   ],
-  declarations: [PdfEditPageComponent, PdfItemsSidebarComponent, AddImagePopupComponent]
+  declarations: [PdfEditPageComponent, PdfItemsSidebarComponent, AddImagePopupComponent, PdfEditorViewComponent]
 })
 export class PdfEditModule { }

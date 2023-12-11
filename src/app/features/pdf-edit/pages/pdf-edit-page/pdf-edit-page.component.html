@@ -1,7 +1,14 @@
-<div>
-  <app-pdf-items-sidebar
+<div class="edit-page">
+  <app-pdf-items-sidebar class="edit-page__sidebar"
     [textItems]="textItems"
     [imageItems]="imageItems"
   ></app-pdf-items-sidebar>
-  <app-add-image-popup></app-add-image-popup>
+
+  <app-pdf-editor-view class="edit-page__editor"
+    [textItems]="textItems"
+    [imageItems]="imageItems"
+  ></app-pdf-editor-view>
+
 </div>
+
+<app-add-image-popup></app-add-image-popup>

@@ -1,0 +1,12 @@
+.edit-page {
+    display: flex;
+
+    &__sidebar {
+       width: 300px;
+    }
+
+    &__editor {
+        // 100% - width of sidebar - width of scroll
+        width: calc(100vw - 300px - 16px);
+    }
+}
