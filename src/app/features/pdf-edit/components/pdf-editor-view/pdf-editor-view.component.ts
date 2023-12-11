@@ -21,9 +21,9 @@ export class PdfEditorViewComponent {
 
   constructor() { }
 
-  async showPdf() {
-    const loadingTask = pdfjsLib.getDocument(this.pdfurl);
-    this.pdfDoc = await loadingTask.promise.then();
-  }
+  // async showPdf() {
+  //   const loadingTask = pdfjsLib.getDocument(this.pdfurl);
+  //   this.pdfDoc = await loadingTask.promise.then();
+  // }
 
 }
