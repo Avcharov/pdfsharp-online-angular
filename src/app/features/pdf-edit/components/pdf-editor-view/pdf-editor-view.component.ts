@@ -17,13 +17,19 @@ export class PdfEditorViewComponent {
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   ctx!: CanvasRenderingContext2D;
 
-  pdfurl = "../../../../../Luxoft - Angular Advanced.pdf";
+  pdfurl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
 
   constructor() { }
 
   // async showPdf() {
   //   const loadingTask = pdfjsLib.getDocument(this.pdfurl);
   //   this.pdfDoc = await loadingTask.promise.then();
+  //   console.log(this.pdfDoc);
+    
+  // }
+
+  // ngOnInit(): void {
+  //   this.showPdf();
   // }
 
 }

@@ -11,14 +11,13 @@ import { pdfEditReducer } from './store/pdf-edit.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { PdfEditEffects } from './store/pdf-edit.effects';
 import { PdfEditorViewComponent } from './components/pdf-editor-view/pdf-editor-view.component';
+
 @NgModule({
   imports: [
     CommonModule,
     PdfEditRoutingModule,
     SharedModule,
-    StoreModule.forRoot({}),
     StoreModule.forFeature(PDF_EDIT_ACTION_KEY, pdfEditReducer),
-    EffectsModule.forRoot([]),
     EffectsModule.forFeature([PdfEditEffects]),
   ],
   declarations: [PdfEditPageComponent, PdfItemsSidebarComponent, AddImagePopupComponent, PdfEditorViewComponent]
