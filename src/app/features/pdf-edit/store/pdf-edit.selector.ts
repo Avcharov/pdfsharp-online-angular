@@ -13,3 +13,8 @@ export const selectImageItems = createSelector(
     selectPdfEditState,
     (state: PdfEditState) => state.imageItems
 );
+
+export const selectPageNum = createSelector(
+    selectPdfEditState,
+    (state: PdfEditState) => state.pageNum
+);

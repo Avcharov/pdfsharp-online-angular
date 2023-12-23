@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ImageItem, TextItem } from '../../models/item';
 import { Store } from '@ngrx/store';
 import {
@@ -15,6 +15,11 @@ export class PdfItemsSidebarComponent implements OnInit {
   @Input() textItems = <TextItem[]>[];
   @Input() imageItems = <ImageItem[]>[];
 
+  @Output() documentUploadedEvent = new EventEmitter<string>();
+  @Output() addImageEvent = new EventEmitter();
+
+  pdfDocumentString: string = '';
+
   constructor(private store: Store) {}
 
   ngOnInit() {}
@@ -25,5 +30,36 @@ export class PdfItemsSidebarComponent implements OnInit {
 
   deleteImageItem(itemId: number) {
     this.store.dispatch(deleteImageItemAction({ itemId }));
+  }
+
+  addImage() {
+    this.addImageEvent.emit();
+  }
+
+  convertPdfToBase64() {
+    var selectedFileInput = document.getElementById("inputFile") as HTMLInputElement;
+    var selectedFile = selectedFileInput.files!;
+
+    // Check if the file is not empty
+    if (selectedFile.length > 0) {
+      // Select the first file from the list
+      let fileToLoad = selectedFile[0];
+
+      // FileReader function for reading the file.
+      let fileReader = new FileReader();
+
+      // Onload of file read the file content
+      fileReader.onload = (fileLoadedEvent) => {
+        // Ensure that result is a string
+        let base64 = fileLoadedEvent.target!.result as string;
+
+        this.pdfDocumentString = base64.slice(base64.indexOf(',') + 1);
+
+        this.documentUploadedEvent.emit(this.pdfDocumentString);
+      };
+
+      // Convert data to base64
+      fileReader.readAsDataURL(fileToLoad);
+    }
   }
 }

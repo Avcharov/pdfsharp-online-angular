@@ -11,5 +11,8 @@
     [items]="imageItems"
     (deleteItemEvent)="deleteImageItem($event)"
   ></app-select>
-  <app-button>Add Image</app-button>
+  <app-button (click)="addImage()">Add Image</app-button>
+
+  <input id="inputFile" type="file" (change)="convertPdfToBase64()" />
+
 </div>

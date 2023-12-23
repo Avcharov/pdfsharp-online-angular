@@ -2,13 +2,15 @@
   <app-pdf-items-sidebar class="edit-page__sidebar"
     [textItems]="textItems"
     [imageItems]="imageItems"
+    (documentUploadedEvent)="convertToBase64($event)"
+    (addImageEvent)="addImage()"
   ></app-pdf-items-sidebar>
 
   <app-pdf-editor-view class="edit-page__editor"
     [textItems]="textItems"
     [imageItems]="imageItems"
+    [pageNum]="pageNum"
   ></app-pdf-editor-view>
-
 </div>
 
-<app-add-image-popup></app-add-image-popup>
+<!-- <app-add-image-popup></app-add-image-popup> -->

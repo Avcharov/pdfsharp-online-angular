@@ -1,12 +1,15 @@
 .edit-page {
     display: flex;
+    position: relative;
+    overflow: hidden;
+    height: calc(100vh - 55px);
 
     &__sidebar {
-       width: 300px;
+       width: 320px;
     }
 
     &__editor {
         // 100% - width of sidebar - width of scroll
-        width: calc(100vw - 300px - 16px);
+         width: calc(100vw - 320px - 16px);
     }
 }

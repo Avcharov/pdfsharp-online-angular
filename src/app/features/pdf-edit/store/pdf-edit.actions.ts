@@ -14,3 +14,11 @@ export const deleteImageItemAction = createAction(
   DELETE_IMAGE_ITEM,
   props<{ itemId: number }>()
 );
+
+export const SET_DOCUMENT_PAGE = `${PDF_EDIT_ACTION_KEY} Set document page`;
+
+export const setDocumentPageAction = createAction(
+  SET_DOCUMENT_PAGE,
+  props<{ pageNum: number }>()
+);
+

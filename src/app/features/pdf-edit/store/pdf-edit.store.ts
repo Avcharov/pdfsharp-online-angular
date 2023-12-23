@@ -5,6 +5,7 @@ export const PDF_EDIT_ACTION_KEY = '[PDF-EDIT]';
 export interface PdfEditState {
   textItems: TextItem[];
   imageItems: ImageItem[];
+  pageNum: number
 }
 
 export const initialPdfEditState: PdfEditState = {
@@ -15,7 +16,7 @@ export const initialPdfEditState: PdfEditState = {
       xPos: 10,
       yPos: 20,
       rotation: 30,
-      isHidden: false,
+      isHidden: true,
       viewId: 100,
       fontSize: 16,
       isBold: true,
@@ -28,7 +29,7 @@ export const initialPdfEditState: PdfEditState = {
       xPos: 30,
       yPos: 40,
       rotation: 60,
-      isHidden: false,
+      isHidden: true,
       viewId: 101,
       fontSize: 18,
       isBold: false,
@@ -56,7 +57,7 @@ export const initialPdfEditState: PdfEditState = {
       xPos: 70,
       yPos: 80,
       rotation: 120,
-      isHidden: false,
+      isHidden: true,
       viewId: 103,
       opacity: 0.8,
     },
@@ -66,7 +67,7 @@ export const initialPdfEditState: PdfEditState = {
       xPos: 90,
       yPos: 100,
       rotation: 150,
-      isHidden: false,
+      isHidden: true,
       viewId: 104,
       opacity: 0.6,
     },
@@ -81,4 +82,5 @@ export const initialPdfEditState: PdfEditState = {
       opacity: 1.0,
     },
   ],
+  pageNum: 1
 };
