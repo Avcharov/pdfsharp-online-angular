@@ -1,18 +1,19 @@
 <div class="pdf-items-sidebar">
   <app-select
-    [name]="'PDF.SIDEBAR.IMAGES'"
+    [name]="'PDF.SIDEBAR.TEXT'"
     [addItemText]="'PDF.BUTTON.ADD_TEXT'"
     [items]="textItems"
     (deleteItemEvent)="deleteTextItem($event)"
   ></app-select>
   <app-select
-    [name]="'PDF.SIDEBAR.TEXT'"
+    [name]="'PDF.SIDEBAR.IMAGES'"
     [addItemText]="'PDF.BUTTON.ADD_IMAGE'"
-    [items]="imageItems"
+    [items]="selectedPageImages"
     (deleteItemEvent)="deleteImageItem($event)"
+    (addItemEvent)="addImage()"
   ></app-select>
-  <app-button (click)="addImage()">Add Image</app-button>
+  <app-button (click)="addImageTest()">Add Image</app-button>
 
-  <input id="inputFile" type="file" (change)="convertPdfToBase64()" />
+  <input id="inputFile" type="file" (change)="convertPdfToBase64()"/>
 
 </div>

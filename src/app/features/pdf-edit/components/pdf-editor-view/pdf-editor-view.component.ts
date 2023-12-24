@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ImageItem, TextItem } from '../../models/item';
 import * as pdfjsLib from 'pdfjs-dist';
+import { Store } from '@ngrx/store';
+import { updateImageItemsAction } from '../../store/pdf-edit.actions';
+import { Subject, debounceTime } from 'rxjs';
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
@@ -14,8 +17,9 @@ export class PdfEditorViewComponent implements AfterViewInit {
   @Input() textItems: TextItem[] = [];
   @Input() imageItems: ImageItem[] = [];
   @Input() pageNum = 1;
+  @Input() selectedPageImages: ImageItem[] = [];
 
-  @Output() setPageNumEvent = new EventEmitter<number>();
+  @Output() setPageNumEvent = new EventEmitter<{ pageNum: number, selectedImageItems: ImageItem[] }>();
 
   @ViewChild("myCanvas", { static: false }) canvas!: ElementRef;
   @ViewChild("drawCanvas", { static: false }) drawCanvas!: ElementRef;
@@ -26,19 +30,8 @@ export class PdfEditorViewComponent implements AfterViewInit {
   scale = 1;
 
   pdfScale = 80;
-  ctx: any;
+  drawCtx: any;
   pdfCtx: any;
-
-  imageObj = new Image();
-  imageName = "../../../../../assets/kpi.png";
-
-  imageX = 0;
-  imageY = 0;
-
-  imageWidth = 0;
-  imageHeight = 0;
-  imageRight = 0;
-  imageBottom = 0;
 
   // Add variables for image dragging and resizing
   isDragging = false;
@@ -51,51 +44,90 @@ export class PdfEditorViewComponent implements AfterViewInit {
   private mouseX: number = 0;
   private mouseY: number = 0;
 
+  private updateSelectedItemsSubject = new Subject<void>();
+
   canvasOffset: any;
   offsetX = 0;
   offsetY = 0;
 
-  constructor() { }
+  hasDrew: boolean = false;
+
+  activeImageIndex: number = 0;
+
+  constructor(private store: Store) {
+
+    this.updateSelectedItemsSubject.pipe(
+      debounceTime(500) // Only emit if there's a 500 ms gap between calls
+    ).subscribe(() => {
+      this.store.dispatch(updateImageItemsAction({ newImageItems: this.selectedPageImages }));
+    });
+  }
 
   ngAfterViewInit() {
-    this.ctx = this.drawCanvas.nativeElement.getContext('2d');
-    this.imageObj.src = this.imageName;
-    this.ctx.imageSmoothingEnabled = false;
-    this.ctx.webkitImageSmoothingEnabled = false;
-    this.ctx.mozImageSmoothingEnabled = false;
+    this.drawCtx = this.drawCanvas.nativeElement.getContext('2d');
+    this.drawCtx.imageSmoothingEnabled = false;
+    this.drawCtx.webkitImageSmoothingEnabled = false;
+    this.drawCtx.mozImageSmoothingEnabled = false;
+
+    this.imageItems.forEach(item => {
+      item.imageObj.src = item.imageName;
+    });
+
   }
 
   preSetImageSettings() {
-    this.imageWidth = this.imageObj.width;
-    this.imageHeight = this.imageObj.height;
+    this.imageItems.forEach((imageItem, index) => {
 
-    while (this.imageWidth > this.pdfCtx.canvas.clientWidth * 0.7 ||
-      this.imageHeight > this.pdfCtx.canvas.clientHeight * 0.7
-    ) {
-      this.imageWidth *= 0.5;
-      this.imageHeight *= 0.5;
-    }
+      imageItem.imageWidth = imageItem.imageWidth || imageItem.imageObj.width;
+      imageItem.imageHeight = imageItem.imageHeight || imageItem.imageObj.height;
 
-    this.imageRight = this.imageX + this.imageWidth;
-    this.imageBottom = this.imageY + this.imageHeight;
-    this.draw(true, false);
+      while (imageItem.imageWidth > this.pdfCtx.canvas.clientWidth ||
+        imageItem.imageHeight > this.pdfCtx.canvas.clientHeight
+      ) {
+        imageItem.imageWidth *= 0.5;
+        imageItem.imageHeight *= 0.5;
+      }
+
+      imageItem.imageRight = imageItem.imageRight || imageItem.xPos + imageItem.imageWidth;
+      imageItem.imageBottom = imageItem.imageBottom || imageItem.yPos + imageItem.imageHeight;
+    });
+
+    this.drawAllImages();
   }
+
 
   // Add event handlers for image dragging and resizing
   handleMouseDown(e: MouseEvent) {
     this.startX = e.clientX - this.offsetX;
     this.startY = e.clientY - this.offsetY;
 
-    this.draggingResizer = this.anchorHitTest(this.startX, this.startY);
-    this.draggingImage = this.draggingResizer < 0 && this.hitImage(this.startX, this.startY);
-    this.isDown = true;
+    this.selectedPageImages.forEach((item, index) => {
+      const resizer = this.anchorHitTest(this.startX, this.startY, item);
+      if (resizer > -1) {
+        this.draggingResizer = resizer;
+        this.isDown = true;
+        this.activeImageIndex = index;
+      }
+    });
+
+    if (this.draggingResizer < 0) {
+      this.selectedPageImages.forEach((item, index) => {
+        if (this.hitImage(this.startX, this.startY, item)) {
+          this.isDown = true;
+          this.draggingImage = true;
+          this.activeImageIndex = index;
+        }
+      });
+    }
   }
 
   handleMouseUp(e: MouseEvent) {
-    this.draggingResizer = -1;
-    this.draggingImage = false;
-    this.isDown = false;
-    this.draw(true, false);
+    if (this.hasDrew) {
+      this.draggingResizer = -1;
+      this.draggingImage = false;
+      this.isDown = false;
+      this.drawAllImages();
+    }
   }
 
   handleMouseOut(e: MouseEvent) {
@@ -106,6 +138,8 @@ export class PdfEditorViewComponent implements AfterViewInit {
   handleMouseMove(e: MouseEvent) {
     if (!this.isDown) return;
 
+    const activeItem = this.selectedPageImages[this.activeImageIndex];
+
     if (this.draggingResizer > -1) {
       this.mouseX = e.clientX - this.offsetX;
       this.mouseY = e.clientY - this.offsetY;
@@ -114,39 +148,39 @@ export class PdfEditorViewComponent implements AfterViewInit {
       switch (this.draggingResizer) {
         case 0:
           // top-left
-          this.imageX = this.mouseX;
-          this.imageWidth = this.imageRight - this.mouseX;
-          this.imageY = this.mouseY;
-          this.imageHeight = this.imageBottom - this.mouseY;
+          activeItem.xPos = this.mouseX;
+          activeItem.imageWidth = activeItem.imageRight - this.mouseX;
+          activeItem.yPos = this.mouseY;
+          activeItem.imageHeight = activeItem.imageBottom - this.mouseY;
           break;
         case 1:
           // top-right
-          this.imageY = this.mouseY;
-          this.imageWidth = this.mouseX - this.imageX;
-          this.imageHeight = this.imageBottom - this.mouseY;
+          activeItem.yPos = this.mouseY;
+          activeItem.imageWidth = this.mouseX - activeItem.xPos;
+          activeItem.imageHeight = activeItem.imageBottom - this.mouseY;
           break;
         case 2:
           // bottom-right
-          this.imageWidth = this.mouseX - this.imageX;
-          this.imageHeight = this.mouseY - this.imageY;
+          activeItem.imageWidth = this.mouseX - activeItem.xPos;
+          activeItem.imageHeight = this.mouseY - activeItem.yPos;
           break;
         case 3:
           // bottom-left
-          this.imageX = this.mouseX;
-          this.imageWidth = this.imageRight - this.mouseX;
-          this.imageHeight = this.mouseY - this.imageY;
+          activeItem.xPos = this.mouseX;
+          activeItem.imageWidth = activeItem.imageRight - this.mouseX;
+          activeItem.imageHeight = this.mouseY - activeItem.yPos;
           break;
       }
 
-      if (this.imageWidth < 25) { this.imageWidth = 25; }
-      if (this.imageHeight < 25) { this.imageHeight = 25; }
+      if (activeItem.imageWidth < 25) { activeItem.imageWidth = 25; }
+      if (activeItem.imageHeight < 25) { activeItem.imageHeight = 25; }
 
       // Set the image right and bottom
-      this.imageRight = this.imageX + this.imageWidth;
-      this.imageBottom = this.imageY + this.imageHeight;
+      activeItem.imageRight = activeItem.xPos + activeItem.imageWidth;
+      activeItem.imageBottom = activeItem.yPos + activeItem.imageHeight;
 
-      // Redraw the image with resizing anchors
-      this.draw(true, true);
+      // Redraw the images with resizing anchors
+      this.drawAllImages();
 
     } else if (this.draggingImage) {
       this.mouseX = e.clientX - this.offsetX;
@@ -155,84 +189,84 @@ export class PdfEditorViewComponent implements AfterViewInit {
       // Move the image by the amount of the latest drag
       const dx = this.mouseX - this.startX;
       const dy = this.mouseY - this.startY;
-      this.imageX += dx;
-      this.imageY += dy;
-      this.imageRight += dx;
-      this.imageBottom += dy;
+      activeItem.xPos += dx;
+      activeItem.yPos += dy;
+      activeItem.imageRight += dx;
+      activeItem.imageBottom += dy;
       // Reset the startXY for next time
       this.startX = this.mouseX;
       this.startY = this.mouseY;
 
-      // Redraw the image with border
-      this.draw(false, true);
+      // Redraw the images with borders
+      this.drawAllImages();
     }
   }
 
-  // Method to draw the image on the canvas
-  draw(withAnchors: boolean, withBorders: boolean) {
-    // Clear the canvas
-    this.ctx.clearRect(0, 0, this.drawCanvas.nativeElement.width, this.drawCanvas.nativeElement.height);
+  drawAllImages() {
+    this.drawCtx.clearRect(0, 0, this.drawCanvas.nativeElement.width, this.drawCanvas.nativeElement.height);
 
-    // Draw the image
-    this.ctx.drawImage(
-      this.imageObj,
-      0, 0, this.imageObj.width, this.imageObj.height, this.imageX, this.imageY, this.imageWidth, this.imageHeight
-    );
+    this.selectedPageImages.forEach(imageItem => {
+      this.drawCtx.drawImage(
+        imageItem.imageObj,
+        0, 0, imageItem.imageObj.width, imageItem.imageObj.height,
+        imageItem.xPos, imageItem.yPos, imageItem.imageWidth, imageItem.imageHeight
+      );
 
+      this.drawAnchorsAndBorders(imageItem);
+    });
 
-    // Optionally draw the draggable anchors
-    if (withAnchors) {
-      this.drawDragAnchor(this.imageX, this.imageY);
-      this.drawDragAnchor(this.imageRight, this.imageY);
-      this.drawDragAnchor(this.imageRight, this.imageBottom);
-      this.drawDragAnchor(this.imageX, this.imageBottom);
-    }
+    this.hasDrew = true;
+    this.updateSelectedItemsSubject.next();
+  }
 
-    // Optionally draw the connecting anchor lines
-    if (withBorders) {
-      this.ctx.beginPath();
-      this.ctx.moveTo(this.imageX, this.imageY);
-      this.ctx.lineTo(this.imageRight, this.imageY);
-      this.ctx.lineTo(this.imageRight, this.imageBottom);
-      this.ctx.lineTo(this.imageX, this.imageBottom);
-      this.ctx.closePath();
-      this.ctx.stroke();
-    }
+  drawAnchorsAndBorders(imageItem: ImageItem) {
+    this.drawDragAnchor(imageItem.xPos, imageItem.yPos);
+    this.drawDragAnchor(imageItem.imageRight, imageItem.yPos);
+    this.drawDragAnchor(imageItem.imageRight, imageItem.imageBottom);
+    this.drawDragAnchor(imageItem.xPos, imageItem.imageBottom);
+
+    this.drawCtx.beginPath();
+    this.drawCtx.moveTo(imageItem.xPos, imageItem.yPos);
+    this.drawCtx.lineTo(imageItem.imageRight, imageItem.yPos);
+    this.drawCtx.lineTo(imageItem.imageRight, imageItem.imageBottom);
+    this.drawCtx.lineTo(imageItem.xPos, imageItem.imageBottom);
+    this.drawCtx.closePath();
+    this.drawCtx.stroke();
   }
 
   // Method to draw a single draggable anchor
   drawDragAnchor(x: number, y: number) {
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, 8, 0, Math.PI * 2, false);
-    this.ctx.closePath();
-    this.ctx.fill();
+    this.drawCtx.beginPath();
+    this.drawCtx.arc(x, y, 8, 0, Math.PI * 2, false);
+    this.drawCtx.closePath();
+    this.drawCtx.fill();
   }
 
   // Method to check if a point is inside a resizing anchor
-  anchorHitTest(x: number, y: number): number {
-    let dx = x - this.imageX;
-    let dy = y - this.imageY;
+  anchorHitTest(x: number, y: number, imageItem: ImageItem): number {
+    let dx = x - imageItem.xPos;
+    let dy = y - imageItem.yPos;
 
     if (dx * dx + dy * dy <= 64) {
       return 0; // top-left
     }
 
-    dx = x - this.imageRight;
-    dy = y - this.imageY;
+    dx = x - imageItem.imageRight;
+    dy = y - imageItem.yPos;
 
     if (dx * dx + dy * dy <= 64) {
       return 1; // top-right
     }
 
-    dx = x - this.imageRight;
-    dy = y - this.imageBottom;
+    dx = x - imageItem.imageRight;
+    dy = y - imageItem.imageBottom;
 
     if (dx * dx + dy * dy <= 64) {
       return 2; // bottom-right
     }
 
-    dx = x - this.imageX;
-    dy = y - this.imageBottom;
+    dx = x - imageItem.xPos;
+    dy = y - imageItem.imageBottom;
 
     if (dx * dx + dy * dy <= 64) {
       return 3; // bottom-left
@@ -242,9 +276,9 @@ export class PdfEditorViewComponent implements AfterViewInit {
   }
 
   // Method to check if a point is inside the image
-  hitImage(x: number, y: number): boolean {
-    return x > this.imageX && x < this.imageX + this.imageWidth &&
-      y > this.imageY && y < this.imageY + this.imageHeight;
+  hitImage(x: number, y: number, imageItem: ImageItem): boolean {
+    return x > imageItem.xPos && x < imageItem.xPos + imageItem.imageWidth &&
+      y > imageItem.yPos && y < imageItem.yPos + imageItem.imageHeight;
   }
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -263,6 +297,18 @@ export class PdfEditorViewComponent implements AfterViewInit {
       // Using promise to fetch the page
       this.pdfDoc!.getPage(pageNum).then((page) => {
         var viewport = page.getViewport({ scale: this.scale });
+
+        this.canvas.nativeElement.height = 0;
+        this.canvas.nativeElement.width = 0;
+
+        var canvasElement = document.getElementById("myCanvas")!;
+        this.canvasOffset = {
+          top: canvasElement.offsetTop,
+          left: canvasElement.offsetLeft
+        };
+        this.offsetX = this.canvasOffset.left + 320 - viewport.width / 2;
+        this.offsetY = this.canvasOffset.top + 115;
+
         this.canvas.nativeElement.height = viewport.height;
         this.canvas.nativeElement.width = viewport.width;
 
@@ -274,7 +320,7 @@ export class PdfEditorViewComponent implements AfterViewInit {
         this.pdfCtx.imageSmoothingEnabled = false;
         this.pdfCtx.webkitImageSmoothingEnabled = false;
         this.pdfCtx.mozImageSmoothingEnabled = false;
-    
+
         // Render PDF page into canvas context
         var renderContext = {
           canvasContext: this.pdfCtx,
@@ -290,20 +336,19 @@ export class PdfEditorViewComponent implements AfterViewInit {
             this.renderPage(this.pageNumPending);
             this.pageNumPending = null;
           }
+          this.selectedPageImages = this.imageItems.filter(i => i.pdfPage === pageNum)
+          this.updateImagesAndRender(pageNum);
         });
       });
 
       // Update page counters
       document.getElementById('page_num')!.textContent = pageNum.toString();
 
-      var canvasElement = document.getElementById("myCanvas")!;
-      this.canvasOffset = {
-        top: canvasElement.offsetTop,
-        left: canvasElement.offsetLeft
-      };
-      this.offsetX = this.canvasOffset.left - 8;
-      this.offsetY = this.canvasOffset.top + 115;
     }
+  }
+
+  updateImagesAndRender(pageNum: number) {
+    this.preSetImageSettings();
   }
 
   queueRenderPage(num: number) {
@@ -318,8 +363,8 @@ export class PdfEditorViewComponent implements AfterViewInit {
     if (this.pageNum >= this.pdfDoc!.numPages) {
       return;
     }
-
-    this.setPageNumEvent.emit(++this.pageNum);
+    this.pageNum++;
+    this.setPageNumEvent.emit({ pageNum: this.pageNum, selectedImageItems: this.selectedPageImages });
     this.queueRenderPage(this.pageNum);
   }
 
@@ -327,14 +372,13 @@ export class PdfEditorViewComponent implements AfterViewInit {
     if (this.pageNum <= 1) {
       return;
     }
-
-    this.setPageNumEvent.emit(--this.pageNum);
+    this.pageNum--;
+    this.setPageNumEvent.emit({ pageNum: this.pageNum, selectedImageItems: this.selectedPageImages });
     this.queueRenderPage(this.pageNum);
   }
 
   zoomOut() {
     this.pdfScale -= 10;
-    //this.draw(false, false);
   }
 
   zoomIn() {

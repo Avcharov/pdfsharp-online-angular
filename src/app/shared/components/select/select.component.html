@@ -8,8 +8,8 @@
       <!-- <fa v-else :icon="['fa', 'chevron-up']" size="lg" /> -->
     </button>
   </div>
-  <div class="select__body" *ngIf="isSelectOpen">
-    <app-button class="button_select-body">
+  <div class="select__body" [hidden]="!isSelectOpen">
+    <app-button class="button_select-body" (click)="addItem()">
       {{ addItemText | translate}}
     </app-button>
     <div class="select__body-items">

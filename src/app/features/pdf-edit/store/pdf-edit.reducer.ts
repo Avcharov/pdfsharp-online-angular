@@ -1,12 +1,18 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialPdfEditState } from "./pdf-edit.store";
-import { deleteImageItemAction, deleteTextItemAction, setDocumentPageAction } from "./pdf-edit.actions";
+import { addImageItemAction, deleteImageItemAction, deleteTextItemAction, setDocumentPageAction, updateImageItemsAction } from "./pdf-edit.actions";
 
 export const pdfEditReducer = createReducer(initialPdfEditState,
     on(deleteImageItemAction, (state, { itemId }) => {
         return {
             ...state,
             imageItems: state.imageItems.filter(i => i.id !== itemId)
+        }
+    }),
+    on(addImageItemAction, (state, { item }) => {
+        return {
+            ...state,
+            imageItems: [...state.imageItems, item]
         }
     }),
     on(deleteTextItemAction, (state, { itemId }) => {
@@ -20,5 +26,14 @@ export const pdfEditReducer = createReducer(initialPdfEditState,
             ...state,
             pageNum: pageNum
         }
-    })
+    }),
+    on(updateImageItemsAction, (state, { newImageItems }) => {
+        return {
+            ...state,
+            imageItems: state.imageItems.map(item =>
+                newImageItems.find(newItem => newItem.id === item.id) || item
+            )
+        }
+    }),
+
 );

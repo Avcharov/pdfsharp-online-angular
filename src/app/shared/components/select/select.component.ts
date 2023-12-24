@@ -14,6 +14,7 @@ export class SelectComponent implements OnInit {
   @Input() items = <Item[]>[];
 
   @Output() deleteItemEvent = new EventEmitter<number>();
+  @Output() addItemEvent = new EventEmitter();
 
   constructor() { }
 
@@ -21,11 +22,11 @@ export class SelectComponent implements OnInit {
   }
 
   toggleSelect() {
-
+    this.isSelectOpen = !this.isSelectOpen;
   }
 
   addItem() {
-
+    this.addItemEvent.emit();
   }
 
   deleteItem(itemId: number){

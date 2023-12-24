@@ -30,7 +30,9 @@
         "Y": "Y",
         "ROTATION": "Rotation",
         "FONT_SIZE": "Font Size",
-        "OPACITY": "Opacity"
+        "OPACITY": "Opacity",
+        "WIDTH": "Width",
+        "HEIGHT": "Height"
       },
       "ADD_IMAGE_POPUP": {
         "DROP_ZONE": "Drop files here",

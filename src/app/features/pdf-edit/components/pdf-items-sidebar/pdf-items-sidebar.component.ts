@@ -14,9 +14,11 @@ import {
 export class PdfItemsSidebarComponent implements OnInit {
   @Input() textItems = <TextItem[]>[];
   @Input() imageItems = <ImageItem[]>[];
+  @Input() selectedPageImages = <ImageItem[]>[];
 
   @Output() documentUploadedEvent = new EventEmitter<string>();
   @Output() addImageEvent = new EventEmitter();
+  @Output() addImageTestEvent = new EventEmitter();
 
   pdfDocumentString: string = '';
 
@@ -34,6 +36,10 @@ export class PdfItemsSidebarComponent implements OnInit {
 
   addImage() {
     this.addImageEvent.emit();
+  }
+
+  addImageTest() {
+    this.addImageTestEvent.emit();
   }
 
   convertPdfToBase64() {

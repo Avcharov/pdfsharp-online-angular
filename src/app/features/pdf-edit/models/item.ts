@@ -17,6 +17,13 @@ export interface TextItem extends ItemInterface {
 
 export interface ImageItem extends ItemInterface {
     opacity: number,
+    imageWidth: number,
+    imageHeight: number,
+    imageRight: number,
+    imageBottom: number,
+    imageObj: HTMLImageElement,
+    imageName: string,
+    pdfPage: number
 }
 
 export type Item = ImageItem | TextItem;

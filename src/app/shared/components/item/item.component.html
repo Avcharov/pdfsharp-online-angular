@@ -34,5 +34,13 @@
           <p class="item__body-property-name"> {{ "PDF.ITEM.OPACITY" | translate }} </p>
           <input class="item__body-property-value" type="number" [(ngModel)]="$any(item).opacity"/>
       </div>
+      <div class="item__body-property" *ngIf="isImageItem(item)">
+          <p class="item__body-property-name"> {{ "PDF.ITEM.WIDTH" | translate }} </p>
+          <input class="item__body-property-value" type="number" [(ngModel)]="$any(item).imageWidth"/>
+      </div>
+      <div class="item__body-property" *ngIf="isImageItem(item)">
+          <p class="item__body-property-name"> {{ "PDF.ITEM.HEIGHT" | translate }} </p>
+          <input class="item__body-property-value" type="number" [(ngModel)]="$any(item).imageHeight"/>
+      </div>
   </div>
 </div>

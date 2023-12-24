@@ -9,7 +9,7 @@
     }
 
     &__editor {
-        // 100% - width of sidebar - width of scroll
-         width: calc(100vw - 320px - 16px);
+        // 100% - width of sidebar
+         width: calc(100vw - 320px);
     }
 }

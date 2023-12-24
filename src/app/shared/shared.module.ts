@@ -20,6 +20,8 @@ import {
   faCircleExclamation, faCircleCheck, faArrowRightFromBracket, faShare, faTriangleExclamation,
   faX, faEnvelope
 } from '@fortawesome/free-solid-svg-icons';
+import { DropZoneComponent } from './components/drop-zone/drop-zone.component';
+import { CrossButtonComponent } from './components/cross-button/cross-button.component';
 
 @NgModule({
   imports: [
@@ -31,12 +33,16 @@ import {
   declarations: [
     ButtonComponent,
     SelectComponent,
-    ItemComponent
+    ItemComponent,
+    DropZoneComponent,
+    CrossButtonComponent
   ],
   exports: [
     ButtonComponent,
     SelectComponent,
-    ItemComponent
+    ItemComponent,
+    DropZoneComponent,
+    CrossButtonComponent
   ]
 })
 export class SharedModule {
