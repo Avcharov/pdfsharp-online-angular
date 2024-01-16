@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { deleteMessagesAction, logInUserAction, signInUserAction, toggleLoginPopupAction } from '../../../../core/store/auth.actions';
+import { deleteMessagesAction, logInUserAction, resetPasswordAction, signInUserAction, toggleLoginPopupAction } from '../../../../core/store/auth.actions';
 import { UserModel } from '../../models/user-model';
-import { selectIsLoginPage, selectMessages } from '../../../../core/store/auth.selector';
+import { selectIsForgotPasswordModelOpen, selectIsLoginPage, selectMessages } from '../../../../core/store/auth.selector';
 import * as _ from 'lodash';
 import { RoleModel } from '../../models/role-model';
 import { RoleEnum } from '../../enums/role-enum';
@@ -19,6 +19,8 @@ export class AuthPageComponent implements OnInit {
   messages = <MessageModel[]>[];
   authRole = new RoleModel(1, RoleEnum.AUTHUSER, 'Authenticated User')
 
+  isForgotPasswordModelOpen = false;
+
   constructor(private store: Store) { }
 
   ngOnInit() {
@@ -29,8 +31,8 @@ export class AuthPageComponent implements OnInit {
     this.store.select(selectIsLoginPage).subscribe(isLoginPage => this.isLoginPage = _.cloneDeep(isLoginPage));
 
     this.store
-    .select(selectMessages)
-    .subscribe((messages) => (this.messages = messages));
+      .select(selectMessages)
+      .subscribe((messages) => (this.messages = messages));
   }
 
   toggleSignUpPopup() {
@@ -40,13 +42,24 @@ export class AuthPageComponent implements OnInit {
   logIn(user: UserModel) {
     user.role = this.authRole;
 
-    this.store.dispatch(logInUserAction({ user: {...user} }));
+    this.store.dispatch(logInUserAction({ user: { ...user } }));
   }
 
   signIn(user: UserModel) {
     user.role = this.authRole;
-    this.store.dispatch(signInUserAction({ user: {...user} }));
+    this.store.dispatch(signInUserAction({ user: { ...user } }));
+  }
 
+  openForgotPasswordModal() {
+    this.isForgotPasswordModelOpen = true;
+  }
+
+  closeForgotPasswordModal() {
+    this.isForgotPasswordModelOpen = false;
+  }
+
+  submitForgotPasswordModal(upn: string) {
+    this.store.dispatch(resetPasswordAction({ upn }));
   }
 
   deleteMessages() {

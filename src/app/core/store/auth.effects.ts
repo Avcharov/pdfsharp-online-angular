@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { authInfoGetUserAction, authInfoGetUserFailAction, authInfoGetUserSuccessAction, getUsersAction, getUsersActionSuccess, logInUserAction, logInUserFailAction, logInUserSuccessAction, signInUserAction, signInUserFailAction, signInUserSuccessAction } from "./auth.actions";
+import { authInfoGetUserAction, authInfoGetUserFailAction, authInfoGetUserSuccessAction, getUsersAction, getUsersActionSuccess, logInUserAction, logInUserFailAction, logInUserSuccessAction, resetPasswordAction, resetPasswordFailAction, resetPasswordSuccessAction, signInUserAction, signInUserFailAction, signInUserSuccessAction } from "./auth.actions";
 import { catchError, map, mergeMap, of } from "rxjs";
 import { Store } from "@ngrx/store";
 import { AuthService } from "../../features/authentication/services/auth.service";
@@ -86,6 +86,25 @@ export class AuthEffects {
             )
         )
     );
+
+    resetPassword = createEffect(() =>
+        this.actions.pipe(
+            ofType(resetPasswordAction),
+            mergeMap(({ upn }) =>
+                this.authService.sendResetPasswordLink(upn).pipe(
+                    map((message) => {
+                        return resetPasswordSuccessAction({ message: MessageModel.fromJson(message) });
+                    }),
+                    catchError((errorResponse) => {
+                        const error = MessageModel.fromJson(errorResponse);
+                        return of(resetPasswordFailAction({ message: error }));
+                    })
+                )
+            )
+        )
+    );
+
+    
     constructor(
         private actions: Actions,
         private authService: AuthService,

@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialAuthState } from "./auth.store";
-import { addMessagesAction, authInfoGetUserSuccessAction, deleteMessagesAction, logInUserFailAction, signInUserFailAction, signInUserSuccessAction, toggleLoginPopupAction } from "./auth.actions";
+import { addMessagesAction, authInfoGetUserSuccessAction, deleteMessagesAction, logInUserFailAction, resetPasswordFailAction, resetPasswordSuccessAction, signInUserFailAction, signInUserSuccessAction, toggleLoginPopupAction } from "./auth.actions";
 
 export const authReducer = createReducer(initialAuthState,
     on(signInUserSuccessAction, (state, { user }) => {
@@ -30,6 +30,12 @@ export const authReducer = createReducer(initialAuthState,
         return { ...state, user: user };
     }),
     on(addMessagesAction, (state, { message }) => {
+        return { ...state, messages: [...state.messages, message] };
+    }),
+    on(resetPasswordSuccessAction, (state, { message }) => {
+        return { ...state, messages: [...state.messages, message] };
+    }),
+    on(resetPasswordFailAction, (state, { message }) => {
         return { ...state, messages: [...state.messages, message] };
     }),
     );

@@ -6,6 +6,7 @@
   <app-auth-login *ngIf="isLoginPage"
   (openSignUpPopupEvent)="toggleSignUpPopup()"
   (logInEvent)="logIn($event)"
+  (openForgotPasswordModalEvent)="openForgotPasswordModal()"
   ></app-auth-login>
 
   <app-auth-signup *ngIf="!isLoginPage"
@@ -19,3 +20,8 @@
   [messages]="messages"
   (deleteMessagesEvent)="deleteMessages()"
 ></app-toast>
+
+<app-auth-forgot-password *ngIf="isForgotPasswordModelOpen"
+  (closeModalEvent)="closeForgotPasswordModal()"
+  (submitModalEvent)="submitForgotPasswordModal($event)"
+></app-auth-forgot-password>

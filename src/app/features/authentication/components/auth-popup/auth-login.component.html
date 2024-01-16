@@ -5,6 +5,7 @@
   <input class="login-form__input" [(ngModel)]="user.password" placeholder="Enter ..." type="text" />
 
   <div class="login-form__buttons">
+    <a  class="login-form__button-link" (click)="openForgotPasswordModal()">{{ 'LOGIN.POPUP.FORGOT_PASSWORD' | translate }}</a>
     <a  class="login-form__button-link" (click)="openSignUp()">{{ 'LOGIN.POPUP.CREATE_NEW' | translate }}</a>
     <app-button class="login-form__submit-button" (click)="logIn()">{{ 'LOGIN.POPUP.SUBMIT' | translate }}</app-button>
   </div>

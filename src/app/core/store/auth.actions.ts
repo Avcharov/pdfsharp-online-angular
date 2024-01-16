@@ -89,3 +89,23 @@ export const getUsersActionSuccess = createAction(
     GETUSERSSUCCESS,
     props<{ users: UserModel[] }>()
 );
+
+
+export const RESET_PASSWORD = `${AUTH_ACTION_KEY} Reset Password`;
+export const RESET_PASSWORD_SUCCESS_TYPE = `${AUTH_ACTION_KEY} Reset Password Success`;
+export const RESET_PASSWORD_FAIL_TYPE = `${AUTH_ACTION_KEY} Reset Password Fail`;
+
+export const resetPasswordAction = createAction(
+    RESET_PASSWORD,
+    props<{ upn: string }>()
+);
+
+export const resetPasswordSuccessAction = createAction(
+    RESET_PASSWORD_SUCCESS_TYPE,
+    props<{ message: MessageModel }>()
+);
+
+export const resetPasswordFailAction = createAction(
+    RESET_PASSWORD_FAIL_TYPE,
+    props<{ message: MessageModel }>()
+);

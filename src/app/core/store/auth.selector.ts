@@ -14,6 +14,10 @@ export const selectIsLoginPage = createSelector(
     (state: AuthState) => state.isLoginPage
 );
 
+export const selectIsForgotPasswordModelOpen = createSelector(
+    selectAuthState,
+    (state: AuthState) => state.isForgotPasswordModelOpen
+  );
 export const selectMessages = createSelector(
     selectAuthState,
     (state: AuthState) => state.messages

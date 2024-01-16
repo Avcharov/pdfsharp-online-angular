@@ -20,6 +20,7 @@ export class AuthLoginComponent implements OnInit {
   @Input() user = new UserModel();
 
   @Output() openSignUpPopupEvent = new EventEmitter();
+  @Output() openForgotPasswordModalEvent = new EventEmitter();
   @Output() logInEvent = new EventEmitter<UserModel>();
 
 
@@ -37,24 +38,11 @@ export class AuthLoginComponent implements OnInit {
     this.openSignUpPopupEvent.emit();
   }
 
+  openForgotPasswordModal() {
+    this.openForgotPasswordModalEvent.emit();
+  }
+
   logIn() {
     this.logInEvent.emit(this.user);
   }
-
-  // async handleCredentialResponse(response: CredentialResponse) {
-  //   await this.authService.LoginWithGoogle(response.credential).subscribe(
-  //     (x: any) => {
-  //       localStorage.setItem("token", x.token);
-  //       this._ngZone.run(() => {
-  //         this.router.navigate(['/editor']);
-  //       })
-  //     },
-  //     (error: any) => {
-  //       debugger
-  //       console.log(error);
-  //     }
-  //   )
-  // }
-
-
 }

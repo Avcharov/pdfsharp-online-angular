@@ -7,6 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AuthenticationRoutingModule } from './authentication.routing.module';
 import { AuthSignupComponent } from './components/auth-signup/auth-signup.component';
 import { FormsModule } from '@angular/forms';
+import { AuthForgotPasswordComponent } from './components/auth-forgot-password/auth-forgot-password.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     AuthenticationRoutingModule
   ],
-  declarations: [AuthPageComponent, AuthLoginComponent,AuthSignupComponent]
+  declarations: [AuthPageComponent, AuthLoginComponent,AuthSignupComponent,AuthForgotPasswordComponent]
 })
 export class AuthenticationModule { }

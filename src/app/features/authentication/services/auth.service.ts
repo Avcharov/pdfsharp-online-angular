@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AUTHENTICATED_USER } from 'src/app/core/store/auth.effects';
 import { TokenApiModel } from 'src/app/core/components/models/token-api.model';
+import { ResetPassword } from './models/reset-password.model';
 
 @Injectable({
   providedIn: 'root'
@@ -77,8 +78,6 @@ export class AuthService extends ApiService {
     return !!localStorage.getItem('token');
   }
 
-
-
   getUpn(): string {
     const token = this.getToken();
     if (!token) return '';
@@ -113,6 +112,18 @@ export class AuthService extends ApiService {
   renewToken(tokenApi: TokenApiModel): Observable<TokenApiModel> {
     const url = `${this.baseUrl}/refresh`
     return this.post(url, tokenApi);
+  }
+  
+  sendResetPasswordLink(email: string) {
+    const url = `${this.baseUrl}/send-reset-email/${email}`;
+    
+    return this.post(url, undefined);
+  }
+
+  resetPassword(resetPasswordObj: ResetPassword) {
+    const url = `${this.baseUrl}/reset-password`
+    
+    return this.post(url, resetPasswordObj);
   }
 
 }
