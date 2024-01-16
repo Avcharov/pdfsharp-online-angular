@@ -1,0 +1,21 @@
+<div class="container_s">
+  <h1 class="login-page__header">
+    <em  *ngIf="isLoginPage">{{ 'LOGIN.HEADER' | translate }}</em>
+    <em  *ngIf="!isLoginPage">{{ 'LOGIN.SIGNIN' | translate }}</em>
+  </h1>
+  <app-auth-login *ngIf="isLoginPage"
+  (openSignUpPopupEvent)="toggleSignUpPopup()"
+  (logInEvent)="logIn($event)"
+  ></app-auth-login>
+
+  <app-auth-signup *ngIf="!isLoginPage"
+  (openLoginUpPopupEvent)="toggleSignUpPopup()"
+  (signInEvent)="signIn($event)"
+  ></app-auth-signup>
+</div>
+
+<app-toast
+  *ngIf="messages.length"
+  [messages]="messages"
+  (deleteMessagesEvent)="deleteMessages()"
+></app-toast>

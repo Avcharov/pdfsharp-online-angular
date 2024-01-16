@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { UserModel } from 'src/app/features/authentication/models/user-model';
+import { AuthService } from 'src/app/features/authentication/services/auth.service';
 
 @Component({
   selector: 'app-shell',
@@ -7,7 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShellComponent implements OnInit {
 
-  constructor() { }
+  get authenticatedUser() {
+    return this.authService.getAuthenticatedUser() || new UserModel();
+  }
+
+  constructor(
+    private authService: AuthService,
+    private store: Store,
+  ) { }
 
   ngOnInit() {
   }

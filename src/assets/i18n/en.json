@@ -8,10 +8,13 @@
     },
     "LOGIN": {
       "HEADER": "Log in",
+      "SIGNIN": "Sign in",
       "POPUP": {
+        "NAME": "Name",
         "EMAIL": "Email",
         "PASSWORD": "Password",
         "CREATE_NEW": "Create new",
+        "BACK_TO_LOGIN": "Back to login",
         "SUBMIT": "Submit",
         "OR": "or"
       }

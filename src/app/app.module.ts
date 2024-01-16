@@ -4,11 +4,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { TokenInterceptor } from './features/authentication/interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { EffectsModule } from '@ngrx/effects';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     CoreModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot({}),
@@ -30,8 +32,12 @@ import { EffectsModule } from '@ngrx/effects';
           new TranslateHttpLoader(http, './assets/i18n/', `.json?v=${new Date().getTime()}`),
         deps: [HttpClient],
       },
-    })  ],
-  providers: [],
+    })],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

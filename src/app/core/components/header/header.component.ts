@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { UserModel } from 'src/app/features/authentication/models/user-model';
+import { AuthService } from 'src/app/features/authentication/services/auth.service';
+import { UserService } from 'src/app/features/user/services/user.service';
+import { selectUser } from '../../store/auth.selector';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +12,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  @Input() authenticatedUser = new UserModel();
+
+  constructor(
+    private store: Store,
+  ) { }
 
   ngOnInit() {
+
   }
 
 }

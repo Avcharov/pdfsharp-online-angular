@@ -22,6 +22,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { DropZoneComponent } from './components/drop-zone/drop-zone.component';
 import { CrossButtonComponent } from './components/cross-button/cross-button.component';
+import { ToastComponent } from './toast/toast.component';
 
 @NgModule({
   imports: [
@@ -35,14 +36,16 @@ import { CrossButtonComponent } from './components/cross-button/cross-button.com
     SelectComponent,
     ItemComponent,
     DropZoneComponent,
-    CrossButtonComponent
+    CrossButtonComponent,
+    ToastComponent
   ],
   exports: [
     ButtonComponent,
     SelectComponent,
     ItemComponent,
     DropZoneComponent,
-    CrossButtonComponent
+    CrossButtonComponent,
+    ToastComponent
   ]
 })
 export class SharedModule {
@@ -79,7 +82,7 @@ export class SharedModule {
       faFilePen,
       faTriangleExclamation,
       faEnvelope,
-      faX
+      faX,
     );
   }
 }

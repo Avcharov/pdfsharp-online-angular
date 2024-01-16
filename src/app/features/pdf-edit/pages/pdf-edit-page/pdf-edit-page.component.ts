@@ -5,6 +5,7 @@ import { selectImageItems, selectPageNum, selectTextItems } from '../../store/pd
 import * as _ from 'lodash';
 import { PdfEditorViewComponent } from '../../components/pdf-editor-view/pdf-editor-view.component';
 import { addImageItemAction, updateImageItemsAction } from '../../store/pdf-edit.actions';
+import { getUsersAction } from 'src/app/core/store/auth.actions';
 @Component({
   selector: 'app-pdf-edit-page',
   templateUrl: './pdf-edit-page.component.html',
@@ -28,6 +29,8 @@ export class PdfEditPageComponent implements OnInit {
   @ViewChild(PdfEditorViewComponent) child!: PdfEditorViewComponent;
 
   ngOnInit() {
+    this.store.dispatch(getUsersAction());
+
     this.getDataFromStore();
   }
 
