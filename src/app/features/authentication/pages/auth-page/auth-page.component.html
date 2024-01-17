@@ -25,3 +25,8 @@
   (closeModalEvent)="closeForgotPasswordModal()"
   (submitModalEvent)="submitForgotPasswordModal($event)"
 ></app-auth-forgot-password>
+
+<app-auth-reset-password *ngIf="isResetPasswordModelOpen"
+  (closeModalEvent)="closeResetPasswordModal()"
+  (submitModalEvent)="submitResetPasswordModal($event)"
+></app-auth-reset-password>

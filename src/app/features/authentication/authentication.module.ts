@@ -8,6 +8,7 @@ import { AuthenticationRoutingModule } from './authentication.routing.module';
 import { AuthSignupComponent } from './components/auth-signup/auth-signup.component';
 import { FormsModule } from '@angular/forms';
 import { AuthForgotPasswordComponent } from './components/auth-forgot-password/auth-forgot-password.component';
+import { AuthResetPasswordComponent } from './components/auth-reset-password/auth-reset-password.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { AuthForgotPasswordComponent } from './components/auth-forgot-password/a
     FormsModule,
     AuthenticationRoutingModule
   ],
-  declarations: [AuthPageComponent, AuthLoginComponent,AuthSignupComponent,AuthForgotPasswordComponent]
+  declarations: [AuthPageComponent, AuthLoginComponent,AuthSignupComponent,AuthForgotPasswordComponent,AuthResetPasswordComponent]
 })
 export class AuthenticationModule { }

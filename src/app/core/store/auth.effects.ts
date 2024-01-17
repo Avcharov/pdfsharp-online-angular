@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { authInfoGetUserAction, authInfoGetUserFailAction, authInfoGetUserSuccessAction, getUsersAction, getUsersActionSuccess, logInUserAction, logInUserFailAction, logInUserSuccessAction, resetPasswordAction, resetPasswordFailAction, resetPasswordSuccessAction, signInUserAction, signInUserFailAction, signInUserSuccessAction } from "./auth.actions";
+import { authInfoGetUserAction, authInfoGetUserFailAction, authInfoGetUserSuccessAction, confirmResetPasswordAction, confirmResetPasswordFailAction, confirmResetPasswordSuccessAction, getUsersAction, getUsersActionSuccess, logInUserAction, logInUserFailAction, logInUserSuccessAction, resetPasswordAction, resetPasswordFailAction, resetPasswordSuccessAction, signInUserAction, signInUserFailAction, signInUserSuccessAction } from "./auth.actions";
 import { catchError, map, mergeMap, of } from "rxjs";
 import { Store } from "@ngrx/store";
 import { AuthService } from "../../features/authentication/services/auth.service";
@@ -98,6 +98,24 @@ export class AuthEffects {
                     catchError((errorResponse) => {
                         const error = MessageModel.fromJson(errorResponse);
                         return of(resetPasswordFailAction({ message: error }));
+                    })
+                )
+            )
+        )
+    );
+
+    confirmResetPassword = createEffect(() =>
+        this.actions.pipe(
+            ofType(confirmResetPasswordAction),
+            mergeMap(({ resetPasswordObj }) =>
+                this.authService.resetPassword(resetPasswordObj).pipe(
+                    map((message) => {
+                        this.router.navigateByUrl('/authentication');
+                        return confirmResetPasswordSuccessAction({ message: MessageModel.fromJson(message) });
+                    }),
+                    catchError((errorResponse) => {
+                        const error = MessageModel.fromJson(errorResponse);
+                        return of(confirmResetPasswordFailAction({ message: error }));
                     })
                 )
             )

@@ -2,6 +2,7 @@ import { Action, createAction, props } from '@ngrx/store';
 import { AUTH_ACTION_KEY } from './auth.store';
 import { UserModel } from '../../features/authentication/models/user-model';
 import { MessageModel } from 'src/app/shared/models/message-model';
+import { ResetPassword } from 'src/app/features/authentication/services/models/reset-password.model';
 
 export const SIGNIN_USER = `${AUTH_ACTION_KEY} SignIn user`;
 export const SIGNIN_USER_SUCCESS_TYPE = `${AUTH_ACTION_KEY} SignIn user Success`;
@@ -107,5 +108,25 @@ export const resetPasswordSuccessAction = createAction(
 
 export const resetPasswordFailAction = createAction(
     RESET_PASSWORD_FAIL_TYPE,
+    props<{ message: MessageModel }>()
+);
+
+
+export const CONFIRM_RESET_PASSWORD = `${AUTH_ACTION_KEY} Confirm Reset Password`;
+export const CONFIRM_RESET_PASSWORD_SUCCESS_TYPE = `${AUTH_ACTION_KEY} Confirm Reset Password Success`;
+export const CONFIRM_RESET_PASSWORD_FAIL_TYPE = `${AUTH_ACTION_KEY} Confirm Reset Password Fail`;
+
+export const confirmResetPasswordAction = createAction(
+    CONFIRM_RESET_PASSWORD,
+    props<{ resetPasswordObj: ResetPassword }>()
+);
+
+export const confirmResetPasswordSuccessAction = createAction(
+    CONFIRM_RESET_PASSWORD_SUCCESS_TYPE,
+    props<{ message: MessageModel }>()
+);
+
+export const confirmResetPasswordFailAction = createAction(
+    CONFIRM_RESET_PASSWORD_FAIL_TYPE,
     props<{ message: MessageModel }>()
 );

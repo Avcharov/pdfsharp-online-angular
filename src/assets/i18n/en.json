@@ -14,6 +14,8 @@
         "EMAIL": "Email",
         "PASSWORD": "Password",
         "CREATE_NEW": "Create new",
+        "RESET_PASSWORD": "Reset password",
+        "INSERT_NEW_PASSWORD": "Insert new password",
         "FORGOT_PASSWORD": "Forgot password",
         "BACK_TO_LOGIN": "Back to login",
         "SUBMIT": "Submit",

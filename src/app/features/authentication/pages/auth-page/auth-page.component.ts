@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { deleteMessagesAction, logInUserAction, resetPasswordAction, signInUserAction, toggleLoginPopupAction } from '../../../../core/store/auth.actions';
+import { confirmResetPasswordAction, deleteMessagesAction, logInUserAction, resetPasswordAction, signInUserAction, toggleLoginPopupAction } from '../../../../core/store/auth.actions';
 import { UserModel } from '../../models/user-model';
 import { selectIsForgotPasswordModelOpen, selectIsLoginPage, selectMessages } from '../../../../core/store/auth.selector';
 import * as _ from 'lodash';
 import { RoleModel } from '../../models/role-model';
 import { RoleEnum } from '../../enums/role-enum';
 import { MessageModel } from 'src/app/shared/models/message-model';
+import { ResetPassword } from '../../services/models/reset-password.model';
 
 @Component({
   selector: 'app-auth-page',
@@ -20,6 +21,7 @@ export class AuthPageComponent implements OnInit {
   authRole = new RoleModel(1, RoleEnum.AUTHUSER, 'Authenticated User')
 
   isForgotPasswordModelOpen = false;
+  isResetPasswordModelOpen = true;
 
   constructor(private store: Store) { }
 
@@ -58,8 +60,20 @@ export class AuthPageComponent implements OnInit {
     this.isForgotPasswordModelOpen = false;
   }
 
+  openResetPasswordModal() {
+    this.isResetPasswordModelOpen = true;
+  }
+
   submitForgotPasswordModal(upn: string) {
     this.store.dispatch(resetPasswordAction({ upn }));
+  }
+
+  closeResetPasswordModal() {
+    this.isResetPasswordModelOpen = false;
+  }
+
+  submitResetPasswordModal(resetPasswordObj: ResetPassword) {
+    this.store.dispatch(confirmResetPasswordAction({ resetPasswordObj }));
   }
 
   deleteMessages() {
