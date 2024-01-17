@@ -22,6 +22,11 @@
         "OR": "or"
       }
     },
+    "PROJECT": {
+      "ITEM": {
+        "OPEN": "Open"
+      }
+    },
     "PDF": {
       "SIDEBAR": {
         "TEXT": "Text",

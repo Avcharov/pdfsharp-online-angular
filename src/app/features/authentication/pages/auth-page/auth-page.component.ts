@@ -21,7 +21,7 @@ export class AuthPageComponent implements OnInit {
   authRole = new RoleModel(1, RoleEnum.AUTHUSER, 'Authenticated User')
 
   isForgotPasswordModelOpen = false;
-  isResetPasswordModelOpen = true;
+  isResetPasswordModelOpen = false;
 
   constructor(private store: Store) { }
 

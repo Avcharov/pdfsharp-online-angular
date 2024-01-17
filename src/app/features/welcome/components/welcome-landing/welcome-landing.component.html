@@ -9,7 +9,7 @@
     <div class="welcome-page__actions">
       <app-button class="button_mr15"> {{ "WELCOME.PREVIEW" | translate }}
       </app-button>
-      <app-button class="button_green button_mr15">{{ "WELCOME.GET_STARTED" | translate }}</app-button>
+      <app-button class="button_green button_mr15" (click)="goToProjectMenu()">{{ "WELCOME.GET_STARTED" | translate }}</app-button>
       <app-button>{{ "WELCOME.ABOUT" | translate }}</app-button>
     </div>
   </div>

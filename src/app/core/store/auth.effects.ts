@@ -35,7 +35,7 @@ export class AuthEffects {
                     map((res) => {
                         this.authService.setToken(res.accessToken);
                         this.authService.setRefreshToken(res.refreshToken);
-                        this.router.navigateByUrl('/editor');
+                        this.router.navigateByUrl('/explorer');
                         return logInUserSuccessAction()
                     }),
                     catchError((errorResponse) => {

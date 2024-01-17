@@ -62,7 +62,8 @@
     }
 }
 
-.add-image-popup {
+.add-image-popup,
+.project-item {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,7 +83,8 @@
         background-color: rgba(255, 255, 255, 0.4);
     }
 
-    .add-image-popup {
+    .add-image-popup,
+    .project-item {
         &__container {
             position: relative;
             width: 50%;
@@ -123,4 +125,16 @@
             justify-content: space-between;
         }
     }
+}
+
+.project-item {
+    position: static;
+    .project-item {
+        &__container {
+            width: 80%;
+        }
+    }
+    // .project-item {
+    //     position: static;
+    // }
 }

@@ -21,6 +21,12 @@ const routes: Routes = [
       import('./features/authentication/authentication.module').then((m) => m.AuthenticationModule),
   },
   {
+    path: 'explorer',
+    loadChildren: () =>
+      import('./features/explorer/explorer.module').then((m) => m.ExplorerModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: '',
     redirectTo: 'welcome',
     pathMatch: 'full',
