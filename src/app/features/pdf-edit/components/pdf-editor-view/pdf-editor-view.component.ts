@@ -59,7 +59,7 @@ export class PdfEditorViewComponent implements AfterViewInit {
     this.updateSelectedItemsSubject.pipe(
       debounceTime(500) // Only emit if there's a 500 ms gap between calls
     ).subscribe(() => {
-      this.store.dispatch(updateImageItemsAction({ newImageItems: this.selectedPageImages }));
+      ////////////////////!!!!!!!!!!!!!!!!!!this.store.dispatch(updateImageItemsAction({ newImageItems: this.selectedPageImages }));
     });
   }
 
@@ -70,7 +70,7 @@ export class PdfEditorViewComponent implements AfterViewInit {
     this.drawCtx.mozImageSmoothingEnabled = false;
 
     this.imageItems.forEach(item => {
-      item.imageObj.src = item.imageName;
+      item.imageObj.src = item.imageData;
     });
 
   }

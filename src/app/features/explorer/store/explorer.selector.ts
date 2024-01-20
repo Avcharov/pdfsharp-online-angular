@@ -9,6 +9,11 @@ export const selectProjects = createSelector(
     (state: ExplorerState) => state.projects
 );
 
+export const selectProject = createSelector(
+  selectExplorerState,
+    (state: ExplorerState) => state.project
+);
+
 // export const selectIsLoginPage = createSelector(
 //     selectAuthState,
 //     (state: AuthState) => state.isLoginPage

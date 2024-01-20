@@ -63,6 +63,7 @@
 }
 
 .add-image-popup,
+.add-new-project,
 .project-item {
     display: flex;
     justify-content: center;
@@ -84,6 +85,7 @@
     }
 
     .add-image-popup,
+    .add-new-project,
     .project-item {
         &__container {
             position: relative;

@@ -9,7 +9,7 @@ const routes: Routes = [
       import('./features/welcome/welcome.module').then((m) => m.WelcomeModule),
   },
   {
-    path: 'editor',
+    path: 'explorer/project',
     loadChildren: () =>
       import('./features/pdf-edit/pdf-edit.module').then((m) => m.PdfEditModule),
     canActivate: [AuthGuard],

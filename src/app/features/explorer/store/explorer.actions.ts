@@ -23,3 +23,42 @@ export const getProjectsFailAction = createAction(
     props<{ message: MessageModel }>()
 );
 
+export const GET_PROJECT = `${EXPLORER_ACTION_KEY} Get Project`;
+export const GET_PROJECT_SUCCESS_TYPE = `${EXPLORER_ACTION_KEY} Get Project Success`;
+export const GET_PROJECT_FAIL_TYPE = `${EXPLORER_ACTION_KEY} Get Project Fail`;
+
+export const getProjectAction = createAction(
+    GET_PROJECT,
+    props<{ projectId: number }>()
+);
+
+export const getProjectSuccessAction = createAction(
+    GET_PROJECT_SUCCESS_TYPE,
+    props<{ project: ProjectModel }>()
+);
+
+export const getProjectFailAction = createAction(
+    GET_PROJECT_FAIL_TYPE,
+    props<{ message: MessageModel }>()
+);
+
+export const ADD_PROJECT = `${EXPLORER_ACTION_KEY} Add Projects`;
+export const ADD_PROJECT_SUCCESS_TYPE = `${EXPLORER_ACTION_KEY} Add Projects Success`;
+export const ADD_PROJECT_FAIL_TYPE = `${EXPLORER_ACTION_KEY} Add Projects Fail`;
+
+export const addProjectAction = createAction(
+    ADD_PROJECT,
+    props<{ project: ProjectModel }>()
+);
+
+export const addProjectSuccessAction = createAction(
+    ADD_PROJECT_SUCCESS_TYPE,
+    props<{ project: ProjectModel }>()
+);
+
+export const addProjectFailAction = createAction(
+    ADD_PROJECT_FAIL_TYPE,
+    props<{ message: MessageModel }>()
+);
+
+

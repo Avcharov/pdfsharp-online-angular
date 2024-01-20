@@ -14,6 +14,7 @@ import { explorerReducer } from './store/explorer.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ExplorerEffects } from './store/explorer.effects';
 import { ProjectService } from './services/project.service';
+import { AddNewProjectModalComponent } from './components/add-new-project-modal/add-new-project-modal.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,7 @@ import { ProjectService } from './services/project.service';
     StoreModule.forFeature(EXPLORER_ACTION_KEY, explorerReducer),
     EffectsModule.forFeature([ExplorerEffects]),
   ],
-  declarations: [ExplorerPageComponent, ExplorerProjectsComponent, ExplorerSidebarComponent],
+  declarations: [ExplorerPageComponent, ExplorerProjectsComponent, ExplorerSidebarComponent,AddNewProjectModalComponent],
   providers: [
     ProjectService
   ]

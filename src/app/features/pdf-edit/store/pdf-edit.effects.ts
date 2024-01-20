@@ -1,9 +1,79 @@
 import { Injectable } from '@angular/core';
-import { Actions, ofType } from '@ngrx/effects';
-
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, mergeMap, of } from "rxjs";
+import { MessageModel } from 'src/app/shared/models/message-model';
+import { addImageItemAction, addImageItemFailAction, addImageItemSuccessAction, deleteImageItemAction, deleteImageItemFailAction, getImagesAction, getImagesFailAction, getImagesSuccessAction, updateImageItemsAction } from './pdf-edit.actions';
+import { PdfEditService } from '../services/pdf-edit.service';
 
 @Injectable()
 export class PdfEditEffects {
-    constructor(private action$: Actions) { }
 
+    getImages = createEffect(() =>
+        this.actions.pipe(
+            ofType(getImagesAction),
+            mergeMap((props) => {
+                return this.pdfEditService.getImages(props.projectId).pipe(
+                    map((images) => getImagesSuccessAction({ images })),
+                    catchError((errorResponse) => {
+                        const error = MessageModel.fromJson(errorResponse);
+                        return of(getImagesFailAction({ message: error }));
+                    })
+                );
+            }
+            )
+        )
+    );
+
+    addImageItem = createEffect(() =>
+        this.actions.pipe(
+            ofType(addImageItemAction),
+            mergeMap((props) => {
+                return this.pdfEditService.addImageItem(props.image).pipe(
+                    map((image) => getImagesAction({ projectId: image.viewId })),
+                    catchError((errorResponse) => {
+                        const error = MessageModel.fromJson(errorResponse);
+                        return of(addImageItemFailAction({ message: error }));
+                    })
+                );
+            }
+            )
+        )
+    );
+
+    updateImageItems = createEffect(() =>
+        this.actions.pipe(
+            ofType(updateImageItemsAction),
+            mergeMap((props) => {
+                return this.pdfEditService.updateImageItem(props.newImageItems).pipe(
+                    map((images) => getImagesAction({ projectId: images[0].viewId })),
+                    catchError((errorResponse) => {
+                        const error = MessageModel.fromJson(errorResponse);
+                        return of(addImageItemFailAction({ message: error }));
+                    })
+                );
+            }
+            )
+        )
+    );
+
+    deleteImageItem = createEffect(() =>
+        this.actions.pipe(
+            ofType(deleteImageItemAction),
+            mergeMap((props) => {
+                return this.pdfEditService.deleteImageItem(props.imageId).pipe(
+                    map((image) => getImagesAction({ projectId: image.viewId })),
+                    catchError((errorResponse) => {
+                        const error = MessageModel.fromJson(errorResponse);
+                        return of(deleteImageItemFailAction({ message: error }));
+                    })
+                );
+            }
+            )
+        )
+    );
+
+    constructor(
+        private actions: Actions,
+        private pdfEditService: PdfEditService
+    ) { }
 }

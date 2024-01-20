@@ -14,6 +14,6 @@ export class WelcomeLandingComponent implements OnInit {
   }
   
   goToProjectMenu() {
-    this.router.navigateByUrl('/editor');
+    this.router.navigateByUrl('/explorer');
   }
 }

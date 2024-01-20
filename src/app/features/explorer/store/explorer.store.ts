@@ -5,10 +5,12 @@ export const EXPLORER_ACTION_KEY = '[EXPLORER]';
 
 export interface ExplorerState {
     projects: ProjectModel[],
+    project: ProjectModel,
     messages: MessageModel[]
 }
 
 export const initialExplorerState: ExplorerState = {
     projects: <ProjectModel[]>[],
+    project: new ProjectModel(),
     messages: <MessageModel[]>[]
 }

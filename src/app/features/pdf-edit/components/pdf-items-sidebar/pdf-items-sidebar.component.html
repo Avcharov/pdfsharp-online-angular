@@ -1,4 +1,6 @@
 <div class="pdf-items-sidebar">
+  <app-button (click)="saveChanges()">Save Changes</app-button>
+
   <app-select
     [name]="'PDF.SIDEBAR.TEXT'"
     [addItemText]="'PDF.BUTTON.ADD_TEXT'"
@@ -12,7 +14,6 @@
     (deleteItemEvent)="deleteImageItem($event)"
     (addItemEvent)="addImage()"
   ></app-select>
-  <app-button (click)="addImageTest()">Add Image</app-button>
 
   <input id="inputFile" type="file" (change)="convertPdfToBase64()"/>
 

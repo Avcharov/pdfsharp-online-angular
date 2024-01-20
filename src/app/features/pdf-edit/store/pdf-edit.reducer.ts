@@ -1,18 +1,24 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialPdfEditState } from "./pdf-edit.store";
-import { addImageItemAction, deleteImageItemAction, deleteTextItemAction, setDocumentPageAction, updateImageItemsAction } from "./pdf-edit.actions";
+import { addImageItemAction, addImageItemSuccessAction, deleteImageItemAction, deleteTextItemAction, getImagesSuccessAction, setDocumentPageAction, updateImageItemsAction } from "./pdf-edit.actions";
 
 export const pdfEditReducer = createReducer(initialPdfEditState,
-    on(deleteImageItemAction, (state, { itemId }) => {
+    on(deleteImageItemAction, (state, { imageId }) => {
         return {
             ...state,
-            imageItems: state.imageItems.filter(i => i.id !== itemId)
+            imageItems: state.imageItems.filter(i => i.id !== imageId)
         }
     }),
-    on(addImageItemAction, (state, { item }) => {
+    on(addImageItemAction, (state, { image }) => {
         return {
             ...state,
-            imageItems: [...state.imageItems, item]
+            //imageItems: [...state.imageItems, image]
+        }
+    }),
+    on(addImageItemSuccessAction, (state, { image }) => {
+        return {
+            ...state,
+            //imageItems: [...state.imageItems, image]
         }
     }),
     on(deleteTextItemAction, (state, { itemId }) => {
@@ -27,12 +33,18 @@ export const pdfEditReducer = createReducer(initialPdfEditState,
             pageNum: pageNum
         }
     }),
-    on(updateImageItemsAction, (state, { newImageItems }) => {
+     on(updateImageItemsAction, (state, { newImageItems }) => {
         return {
             ...state,
             imageItems: state.imageItems.map(item =>
                 newImageItems.find(newItem => newItem.id === item.id) || item
             )
+        }
+    }),
+    on(getImagesSuccessAction, (state, { images }) => {
+        return {
+            ...state,
+            imageItems: [...state.imageItems, ...images.filter(image2 => !state.imageItems.some(image1 => image1.id === image2.id))]
         }
     }),
 

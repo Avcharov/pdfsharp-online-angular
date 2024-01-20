@@ -4,8 +4,11 @@ import { PdfEditPageComponent } from './pages/pdf-edit-page/pdf-edit-page.compon
 
 const routes: Routes = [
     {
-      path: '',
+      path: ':projectId',
       component: PdfEditPageComponent,
+      loadChildren: () =>
+      import('../../features/explorer/explorer.module').then((m) => m.ExplorerModule),
+
     }
   ];
   

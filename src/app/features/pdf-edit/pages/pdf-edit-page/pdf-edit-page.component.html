@@ -4,7 +4,7 @@
     [imageItems]="imageItems"
     [selectedPageImages]="selectedPageImages"
     (documentUploadedEvent)="convertToBase64($event)"
-    (addImageTestEvent)="addTestImage()"
+    (saveChangesEvent)="saveChanges()"
     (addImageEvent)="openAddImagePopup()"
   ></app-pdf-items-sidebar>
 

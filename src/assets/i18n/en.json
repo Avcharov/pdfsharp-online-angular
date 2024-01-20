@@ -25,6 +25,11 @@
     "PROJECT": {
       "ITEM": {
         "OPEN": "Open"
+      },
+      "EXPLORER": {
+        "POPUP": {
+          "ADD_DOCUMENT": "Add Document"
+        }
       }
     },
     "PDF": {

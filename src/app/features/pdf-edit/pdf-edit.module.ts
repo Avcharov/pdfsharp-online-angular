@@ -12,6 +12,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { PdfEditEffects } from './store/pdf-edit.effects';
 import { PdfEditorViewComponent } from './components/pdf-editor-view/pdf-editor-view.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { PdfEditService } from './services/pdf-edit.service';
 
 @NgModule({
   imports: [
@@ -22,6 +23,9 @@ import { TranslateModule } from '@ngx-translate/core';
     StoreModule.forFeature(PDF_EDIT_ACTION_KEY, pdfEditReducer),
     EffectsModule.forFeature([PdfEditEffects]),
   ],
-  declarations: [PdfEditPageComponent, PdfItemsSidebarComponent, AddImagePopupComponent, PdfEditorViewComponent, AddImagePopupComponent]
+  declarations: [PdfEditPageComponent, PdfItemsSidebarComponent, AddImagePopupComponent, PdfEditorViewComponent, AddImagePopupComponent],
+  providers: [
+    PdfEditService
+  ]
 })
 export class PdfEditModule { }

@@ -17,5 +17,19 @@ export class ProjectService extends ApiService {
         return this.get(url);
     }
 
+    getProjectById(projectId: number): Observable<ProjectModel> {
+        const url = `${this.baseUrl}?projectId=${projectId}`;
+
+        return this.get(url).pipe(
+            map((response => ProjectModel.fromJson(response)))
+        );
+    }
+
+    addProject(newProject: ProjectModel): Observable<ProjectModel> {
+        const url = `${this.baseUrl}`;
+
+        return this.post(url, newProject);
+    }
+
 
 }

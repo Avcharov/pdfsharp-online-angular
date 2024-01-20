@@ -18,7 +18,7 @@ export class PdfItemsSidebarComponent implements OnInit {
 
   @Output() documentUploadedEvent = new EventEmitter<string>();
   @Output() addImageEvent = new EventEmitter();
-  @Output() addImageTestEvent = new EventEmitter();
+  @Output() saveChangesEvent = new EventEmitter();
 
   pdfDocumentString: string = '';
 
@@ -30,16 +30,16 @@ export class PdfItemsSidebarComponent implements OnInit {
     this.store.dispatch(deleteTextItemAction({ itemId }));
   }
 
-  deleteImageItem(itemId: number) {
-    this.store.dispatch(deleteImageItemAction({ itemId }));
+  deleteImageItem(imageId: number) {
+    this.store.dispatch(deleteImageItemAction({ imageId }));
   }
 
   addImage() {
     this.addImageEvent.emit();
   }
 
-  addImageTest() {
-    this.addImageTestEvent.emit();
+  saveChanges() {
+    this.saveChangesEvent.emit();
   }
 
   convertPdfToBase64() {

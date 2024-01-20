@@ -3,10 +3,11 @@ export class ProjectModel {
         public id = 0,
         public name = '',
         public userId = 0,
+        public base64AttachmentCode = ''
     ) { }
 
     public static fromJson(json: any): ProjectModel {
-        return new ProjectModel(json.id, json.name, json.description);
+        return new ProjectModel(json.id, json.name, json.userId, json.base64AttachmentCode);
     }
 
     public static fromArrayJson(json: any[]): ProjectModel[] {
@@ -17,7 +18,8 @@ export class ProjectModel {
         return {
             id: this.id,
             name: this.name,
-            userId: this.userId
+            userId: this.userId,
+            base64AttachmentCode: this.base64AttachmentCode
         };
     }
 

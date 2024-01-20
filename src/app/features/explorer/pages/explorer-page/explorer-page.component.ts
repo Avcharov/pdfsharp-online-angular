@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectModel } from '../../models/project-model';
 import { Store } from '@ngrx/store';
 import { selectProjects } from '../../store/explorer.selector';
-import { getProjectsAction } from '../../store/explorer.actions';
+import { addProjectAction, getProjectsAction } from '../../store/explorer.actions';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
 
 @Component({
@@ -13,6 +13,8 @@ import { AuthService } from 'src/app/features/authentication/services/auth.servi
 export class ExplorerPageComponent implements OnInit {
 
   projects = <ProjectModel[]>[];
+
+  isAddNewProjectModalVisible = false;
 
   constructor(private store: Store, private authService: AuthService) { }
 
@@ -38,5 +40,15 @@ export class ExplorerPageComponent implements OnInit {
       projects => this.projects = projects
     );
   }
+
+  openAddNewProjectModal() {
+    this.isAddNewProjectModalVisible = true;
+  }
+
+  closeAddNewProjectModal() {
+    this.isAddNewProjectModalVisible = false;
+  }
+
+
 
 }

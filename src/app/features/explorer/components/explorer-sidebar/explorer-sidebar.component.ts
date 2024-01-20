@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-explorer-sidebar',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExplorerSidebarComponent implements OnInit {
 
+  @Output() addNewProjectEvent = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  addNewProject() {
+    this.addNewProjectEvent.emit();
+  }
 }
