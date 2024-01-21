@@ -1,6 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialPdfEditState } from "./pdf-edit.store";
-import { addImageItemAction, addImageItemSuccessAction, deleteImageItemAction, deleteTextItemAction, getImagesSuccessAction, setDocumentPageAction, updateImageItemsAction } from "./pdf-edit.actions";
+import { addImageItemAction, addImageItemSuccessAction, deleteImageItemAction, deleteTextItemAction, downloadFileAction, downloadFileFailAction, downloadFileSuccessAction, getImagesAction, getImagesFailAction, getImagesSuccessAction, setDocumentPageAction, updateImageItemsAction } from "./pdf-edit.actions";
+import { getProjectsAction, getProjectsFailAction, getProjectsSuccessAction } from "../../explorer/store/explorer.actions";
 
 export const pdfEditReducer = createReducer(initialPdfEditState,
     on(deleteImageItemAction, (state, { imageId }) => {
@@ -18,9 +19,44 @@ export const pdfEditReducer = createReducer(initialPdfEditState,
     on(addImageItemSuccessAction, (state, { image }) => {
         return {
             ...state,
-            //imageItems: [...state.imageItems, image]
         }
     }),
+    on(getImagesAction, (state) => {
+        return {
+            ...state,
+            isLoadingImages: true
+        }
+    }),
+    on(getImagesSuccessAction, (state) => {
+        return {
+            ...state,
+            isLoadingImages: false
+        }
+    }),
+    on(getImagesFailAction, (state) => {
+        return {
+            ...state,
+            isLoadingImages: false
+        }
+    }), 
+    on(downloadFileAction, (state) => {
+        return {
+            ...state,
+            isLoadingImages: true
+        }
+    }),
+    on(downloadFileSuccessAction, (state) => {
+        return {
+            ...state,
+            isLoadingImages: false
+        }
+    }),
+    on(downloadFileFailAction, (state) => {
+        return {
+            ...state,
+            isLoadingImages: false
+        }
+    }), 
     on(deleteTextItemAction, (state, { itemId }) => {
         return {
             ...state,

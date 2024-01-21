@@ -9,11 +9,18 @@
             <app-button (click)="zoomOut()">ZoomOut</app-button>
             <span style="color: white;">Scale: <span style="color: white;"> {{ pdfScale }} </span></span>
             <app-button (click)="zoomIn()">ZoomIn</app-button>
-
+        </div>
+        <div class="view__navbar-page-container">
+            <app-button (click)="printDocument()">Print document</app-button>
         </div>
     </div>
     <div class="view__document">
-        <div class="container_1">
+
+        <div class="loader-container" *ngIf="isLoadingProject || isLoadingImages">
+            <app-loader  [size]="'3x'"></app-loader>
+        </div>
+
+        <div class="container_1" [ngStyle]="{'display': (isLoadingProject || isLoadingImages) ? 'none' : 'flex'}">
             <canvas  #myCanvas id="myCanvas"></canvas>
             <canvas  #drawCanvas id="drawCanvas"
                 (pointerdown)="handleMouseDown($event)"

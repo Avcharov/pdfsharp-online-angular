@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ProjectModel } from '../../models/project-model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-explorer-projects',
@@ -10,11 +11,13 @@ export class ExplorerProjectsComponent implements OnInit {
 
   @Input() projects = <ProjectModel[]>[];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
-
+  openProjectById(projectId: number) {
+    this.router.navigateByUrl(`explorer/project/${projectId}`);
+  }
 
 }

@@ -18,3 +18,8 @@ export const selectPageNum = createSelector(
     selectPdfEditState,
     (state: PdfEditState) => state.pageNum
 );
+
+export const selectIsLoadingImages = createSelector(
+    selectPdfEditState,
+    (state: PdfEditState) => state.isLoadingImages
+);

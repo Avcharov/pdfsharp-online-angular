@@ -91,3 +91,27 @@ export const getImagesFailAction = createAction(
   GET_IMAGES_FAIL_TYPE,
   props<{ message: MessageModel }>()
 );
+
+export const DOWNLOAD_FILE = `${PDF_EDIT_ACTION_KEY} Download File`;
+export const DOWNLOAD_FILE_SUCCESS_TYPE = `${PDF_EDIT_ACTION_KEY} Download File Success`;
+export const DOWNLOAD_FILE_FAIL_TYPE = `${PDF_EDIT_ACTION_KEY} Download File Fail`;
+export const DOWNLOAD_FILE_SAVE_TYPE = `${PDF_EDIT_ACTION_KEY} Download File Save`;
+
+export const downloadFileAction = createAction(
+  DOWNLOAD_FILE,
+  props<{ projectName: string, projectId: number }>()
+);
+
+export const downloadFileSuccessAction = createAction(
+  DOWNLOAD_FILE_SUCCESS_TYPE,
+  props<{ fileName: string, file: Blob }>()
+);
+
+export const downloadFileFailAction = createAction(
+  DOWNLOAD_FILE_FAIL_TYPE,
+  props<{ message: MessageModel }>()
+);
+
+export const downloadFileSaveAction = createAction(
+  DOWNLOAD_FILE_SAVE_TYPE
+);

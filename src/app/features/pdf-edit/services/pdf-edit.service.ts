@@ -37,4 +37,5 @@ export class PdfEditService extends ApiService {
         const url = `${this.baseUrl}/${imageId}`;
         return this.delete(url);
     }
+    
 }

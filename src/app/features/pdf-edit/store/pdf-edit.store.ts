@@ -5,7 +5,8 @@ export const PDF_EDIT_ACTION_KEY = '[PDF-EDIT]';
 export interface PdfEditState {
   textItems: TextItem[];
   imageItems: ImageItem[];
-  pageNum: number
+  pageNum: number,
+  isLoadingImages: boolean,
 }
 
 export const initialPdfEditState: PdfEditState = {
@@ -50,58 +51,7 @@ export const initialPdfEditState: PdfEditState = {
       isUnderlined: false,
     },
   ],
-  imageItems: [
-    // {
-    //   id: 1,
-    //   name: 'Image Item 1',
-    //   xPos: 70,
-    //   yPos: 80,
-    //   rotation: 120,
-    //   isHidden: true,
-    //   viewId: 103,
-    //   opacity: 0.8,
-    //   imageWidth: 0,
-    //   imageHeight: 0,
-    //   imageRight: 0 ,
-    //   imageBottom: 0,
-    //   imageObj: new Image() as HTMLImageElement,
-    //   imageData: '../../../../../assets/kpi.png',
-    //   pdfPage: 1
-    // },
-    // {
-    //   id: 2,
-    //   name: 'Image Item 2',
-    //   xPos: 220,
-    //   yPos: 200,
-    //   rotation: 150,
-    //   isHidden: true,
-    //   viewId: 104,
-    //   opacity: 0.6,
-    //   imageWidth: 0,
-    //   imageHeight: 0,
-    //   imageRight: 0 ,
-    //   imageBottom: 0,
-    //   imageObj: new Image() as HTMLImageElement,
-    //   imageData: '../../../../../assets/code.png',
-    //   pdfPage: 2
-    // },
-    // {
-    //   id: 3,
-    //   name: 'Image Item 3',
-    //   xPos: 110,
-    //   yPos: 120,
-    //   rotation: 180,
-    //   isHidden: true,
-    //   viewId: 105,
-    //   opacity: 1.0,
-    //   imageWidth: 0,
-    //   imageHeight: 0,
-    //   imageRight: 0 ,
-    //   imageBottom: 0,
-    //   imageObj: new Image() as HTMLImageElement,
-    //   imageData: '../../../../../assets/code.png',
-    //   pdfPage: 1
-    // },
-  ],
-  pageNum: 1
+  imageItems: [],
+  pageNum: 1,
+  isLoadingImages: false
 };

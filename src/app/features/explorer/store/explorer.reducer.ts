@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialExplorerState } from "./explorer.store";
-import { getProjectSuccessAction, getProjectsSuccessAction } from "./explorer.actions";
+import { getProjectAction, getProjectFailAction, getProjectSuccessAction, getProjectsAction, getProjectsFailAction, getProjectsSuccessAction } from "./explorer.actions";
 
 export const explorerReducer = createReducer(initialExplorerState,
     on(getProjectsSuccessAction, (state, { projects }) => {
@@ -14,6 +14,24 @@ export const explorerReducer = createReducer(initialExplorerState,
         return {
             ...state,
             project: project,
+        }
+    }),
+    on(getProjectAction, (state) => {
+        return {
+            ...state,
+            isLoadingProject: true
+        }
+    }),
+    on(getProjectSuccessAction, (state) => {
+        return {
+            ...state,
+            isLoadingProject: false
+        }
+    }),
+    on(getProjectFailAction, (state) => {
+        return {
+            ...state,
+            isLoadingProject: false
         }
     }),
 

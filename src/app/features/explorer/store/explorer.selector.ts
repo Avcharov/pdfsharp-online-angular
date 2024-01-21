@@ -14,16 +14,7 @@ export const selectProject = createSelector(
     (state: ExplorerState) => state.project
 );
 
-// export const selectIsLoginPage = createSelector(
-//     selectAuthState,
-//     (state: AuthState) => state.isLoginPage
-// );
-
-// export const selectIsForgotPasswordModelOpen = createSelector(
-//     selectAuthState,
-//     (state: AuthState) => state.isForgotPasswordModelOpen
-//   );
-// export const selectMessages = createSelector(
-//     selectAuthState,
-//     (state: AuthState) => state.messages
-//   );
+export const selectIsLoadingProject = createSelector(
+  selectExplorerState,
+    (state: ExplorerState) => state.isLoadingProject
+);

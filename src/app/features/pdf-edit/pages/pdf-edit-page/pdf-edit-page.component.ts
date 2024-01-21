@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ImageItem, TextItem } from '../../models/item';
 import { Store } from '@ngrx/store';
-import { selectImageItems, selectPageNum, selectTextItems } from '../../store/pdf-edit.selector';
+import { selectImageItems, selectIsLoadingImages, selectPageNum, selectTextItems } from '../../store/pdf-edit.selector';
 import * as _ from 'lodash';
 import { PdfEditorViewComponent } from '../../components/pdf-editor-view/pdf-editor-view.component';
 import { addImageItemAction, getImagesAction, setDocumentPageAction, updateImageItemsAction } from '../../store/pdf-edit.actions';
@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
 import { ProjectModel } from 'src/app/features/explorer/models/project-model';
 import { getProjectAction } from 'src/app/features/explorer/store/explorer.actions';
-import { selectProject } from 'src/app/features/explorer/store/explorer.selector';
+import { selectIsLoadingProject, selectProject } from 'src/app/features/explorer/store/explorer.selector';
 @Component({
   selector: 'app-pdf-edit-page',
   templateUrl: './pdf-edit-page.component.html',
@@ -28,6 +28,9 @@ export class PdfEditPageComponent implements OnInit {
   pageNum = 1;
 
   addImagePopupVisible = false;
+
+  isLoadingProject = false;
+  isLoadingImages = false;
 
   constructor(
     private store: Store,
@@ -50,6 +53,9 @@ export class PdfEditPageComponent implements OnInit {
   }
 
   private getDataFromStore() {
+    this.store.select(selectIsLoadingProject).subscribe(isLoadingProject => this.isLoadingProject = isLoadingProject);
+    this.store.select(selectIsLoadingImages).subscribe(isLoadingImages => this.isLoadingImages = isLoadingImages);
+
     this.store.select(selectTextItems).subscribe(textItems => this.textItems = _.cloneDeep(textItems));
     this.store.select(selectImageItems).subscribe(imageItems => {
       this.imageItems = _.cloneDeep(imageItems);

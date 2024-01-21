@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ImageItem, TextItem } from '../../models/item';
 import { Store } from '@ngrx/store';
+import { Location } from '@angular/common';
 import {
   deleteImageItemAction,
   deleteTextItemAction,
@@ -22,9 +23,12 @@ export class PdfItemsSidebarComponent implements OnInit {
 
   pdfDocumentString: string = '';
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private location: Location,
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   deleteTextItem(itemId: number) {
     this.store.dispatch(deleteTextItemAction({ itemId }));
@@ -40,6 +44,10 @@ export class PdfItemsSidebarComponent implements OnInit {
 
   saveChanges() {
     this.saveChangesEvent.emit();
+  }
+
+  navigateBack() {
+    this.location.back();
   }
 
   convertPdfToBase64() {

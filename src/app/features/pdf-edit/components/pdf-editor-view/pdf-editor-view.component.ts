@@ -2,8 +2,9 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Outp
 import { ImageItem, TextItem } from '../../models/item';
 import * as pdfjsLib from 'pdfjs-dist';
 import { Store } from '@ngrx/store';
-import { updateImageItemsAction } from '../../store/pdf-edit.actions';
+import { downloadFileAction, updateImageItemsAction } from '../../store/pdf-edit.actions';
 import { Subject, debounceTime } from 'rxjs';
+import { ProjectModel } from 'src/app/features/explorer/models/project-model';
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
@@ -18,6 +19,10 @@ export class PdfEditorViewComponent implements AfterViewInit {
   @Input() imageItems: ImageItem[] = [];
   @Input() pageNum = 1;
   @Input() selectedPageImages: ImageItem[] = [];
+  @Input() project = new ProjectModel();
+
+  @Input() isLoadingProject = false;
+  @Input() isLoadingImages = false;
 
   @Output() setPageNumEvent = new EventEmitter<{ pageNum: number, selectedImageItems: ImageItem[] }>();
 
@@ -349,6 +354,10 @@ export class PdfEditorViewComponent implements AfterViewInit {
 
   updateImagesAndRender(pageNum: number) {
     this.preSetImageSettings();
+  }
+
+  printDocument() {
+    this.store.dispatch(downloadFileAction({projectName: this.project.name, projectId: this.project.id}));
   }
 
   queueRenderPage(num: number) {

@@ -1,4 +1,7 @@
 <div class="pdf-items-sidebar">
+  <app-button (click)="navigateBack()" style="margin-right: 10px;">
+    <fa-icon [icon]="['fas', 'arrow-left-long']"></fa-icon>
+  </app-button>
   <app-button (click)="saveChanges()">Save Changes</app-button>
 
   <app-select
@@ -14,7 +17,4 @@
     (deleteItemEvent)="deleteImageItem($event)"
     (addItemEvent)="addImage()"
   ></app-select>
-
-  <input id="inputFile" type="file" (change)="convertPdfToBase64()"/>
-
 </div>

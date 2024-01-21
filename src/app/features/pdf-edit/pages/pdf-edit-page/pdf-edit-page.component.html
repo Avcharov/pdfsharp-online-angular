@@ -9,10 +9,13 @@
   ></app-pdf-items-sidebar>
 
   <app-pdf-editor-view class="edit-page__editor"
+    [project]="project"
     [textItems]="textItems"
     [imageItems]="imageItems"
     [selectedPageImages]="selectedPageImages"
     [pageNum]="pageNum"
+    [isLoadingProject]="isLoadingProject"
+    [isLoadingImages]="isLoadingImages"
     (updateSelectedImageItems)="updateSelectedItems()"
     (setPageNumEvent)="pageChanged($event)"
   ></app-pdf-editor-view>

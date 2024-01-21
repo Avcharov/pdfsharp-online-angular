@@ -24,6 +24,7 @@ import { DropZoneComponent } from './components/drop-zone/drop-zone.component';
 import { CrossButtonComponent } from './components/cross-button/cross-button.component';
 import { ToastComponent } from './toast/toast.component';
 import { ProjectItemComponent } from './components/project-item/project-item.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { ProjectItemComponent } from './components/project-item/project-item.com
     DropZoneComponent,
     CrossButtonComponent,
     ToastComponent,
+    LoaderComponent,
     ProjectItemComponent
   ],
   exports: [
@@ -48,7 +50,9 @@ import { ProjectItemComponent } from './components/project-item/project-item.com
     DropZoneComponent,
     CrossButtonComponent,
     ToastComponent,
-    ProjectItemComponent
+    LoaderComponent,
+    ProjectItemComponent,
+    FontAwesomeModule
   ]
 })
 export class SharedModule {

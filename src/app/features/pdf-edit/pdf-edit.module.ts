@@ -13,6 +13,7 @@ import { PdfEditEffects } from './store/pdf-edit.effects';
 import { PdfEditorViewComponent } from './components/pdf-editor-view/pdf-editor-view.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PdfEditService } from './services/pdf-edit.service';
+import { ProjectService } from './services/project.service';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { PdfEditService } from './services/pdf-edit.service';
   ],
   declarations: [PdfEditPageComponent, PdfItemsSidebarComponent, AddImagePopupComponent, PdfEditorViewComponent, AddImagePopupComponent],
   providers: [
-    PdfEditService
+    PdfEditService,
+    ProjectService
   ]
 })
 export class PdfEditModule { }

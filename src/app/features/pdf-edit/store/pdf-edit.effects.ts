@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from "rxjs";
 import { MessageModel } from 'src/app/shared/models/message-model';
-import { addImageItemAction, addImageItemFailAction, addImageItemSuccessAction, deleteImageItemAction, deleteImageItemFailAction, getImagesAction, getImagesFailAction, getImagesSuccessAction, updateImageItemsAction } from './pdf-edit.actions';
+import { addImageItemAction, addImageItemFailAction, addImageItemSuccessAction, deleteImageItemAction, deleteImageItemFailAction, downloadFileAction, downloadFileFailAction, downloadFileSaveAction, downloadFileSuccessAction, getImagesAction, getImagesFailAction, getImagesSuccessAction, updateImageItemsAction } from './pdf-edit.actions';
 import { PdfEditService } from '../services/pdf-edit.service';
+import { DownloadService } from 'src/app/core/services/download.service';
+import { ProjectService } from '../services/project.service';
 
 @Injectable()
 export class PdfEditEffects {
@@ -72,8 +74,36 @@ export class PdfEditEffects {
         )
     );
 
+    downloadFile = createEffect(() =>
+        this.actions.pipe(
+            ofType(downloadFileAction),
+            mergeMap((props) => {
+                return this.projectService.downloadDocument(props.projectId).pipe(
+                    map((file) => downloadFileSuccessAction({ fileName: props.projectName, file })),
+                    catchError((errorResponse) => {
+                        const error = MessageModel.fromJson(errorResponse);
+                        return of(downloadFileFailAction({ message: error }));
+                    })
+                );
+            }
+            )
+        )
+    );
+
+    downloadFileSuccess = createEffect(() =>
+        this.actions.pipe(
+            ofType(downloadFileSuccessAction),
+            map((props) => {
+                this.downloadService.save(props.fileName, props.file)
+                return downloadFileSaveAction()
+            })
+        )
+    );
+
     constructor(
         private actions: Actions,
-        private pdfEditService: PdfEditService
+        private pdfEditService: PdfEditService,
+        private projectService: ProjectService,
+        private downloadService: DownloadService
     ) { }
 }
