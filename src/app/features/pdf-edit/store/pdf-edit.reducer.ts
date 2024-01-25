@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { initialPdfEditState } from "./pdf-edit.store";
-import { addImageItemAction, addImageItemSuccessAction, deleteImageItemAction, deleteTextItemAction, downloadFileAction, downloadFileFailAction, downloadFileSuccessAction, getImagesAction, getImagesFailAction, getImagesSuccessAction, setDocumentPageAction, updateImageItemsAction } from "./pdf-edit.actions";
+import { addImageItemAction, addImageItemSuccessAction, deleteImageItemAction, deleteTextItemAction, downloadFileAction, downloadFileFailAction, downloadFileSuccessAction, downloadTxtFileAction, downloadTxtFileFailAction, downloadTxtFileSuccessAction, getImagesAction, getImagesFailAction, getImagesSuccessAction, setDocumentPageAction, updateImageItemsAction } from "./pdf-edit.actions";
 import { getProjectsAction, getProjectsFailAction, getProjectsSuccessAction } from "../../explorer/store/explorer.actions";
 
 export const pdfEditReducer = createReducer(initialPdfEditState,
@@ -52,6 +52,24 @@ export const pdfEditReducer = createReducer(initialPdfEditState,
         }
     }),
     on(downloadFileFailAction, (state) => {
+        return {
+            ...state,
+            isLoadingImages: false
+        }
+    }), 
+    on(downloadTxtFileAction, (state) => {
+        return {
+            ...state,
+            isLoadingImages: true
+        }
+    }),
+    on(downloadTxtFileSuccessAction, (state) => {
+        return {
+            ...state,
+            isLoadingImages: false
+        }
+    }),
+    on(downloadTxtFileFailAction, (state) => {
         return {
             ...state,
             isLoadingImages: false

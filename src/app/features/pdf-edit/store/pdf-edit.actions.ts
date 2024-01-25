@@ -115,3 +115,27 @@ export const downloadFileFailAction = createAction(
 export const downloadFileSaveAction = createAction(
   DOWNLOAD_FILE_SAVE_TYPE
 );
+
+export const DOWNLOAD_TXT_FILE = `${PDF_EDIT_ACTION_KEY} Download TXT File`;
+export const DOWNLOAD_TXT_FILE_SUCCESS_TYPE = `${PDF_EDIT_ACTION_KEY} Download TXT File Success`;
+export const DOWNLOAD_TXT_FILE_FAIL_TYPE = `${PDF_EDIT_ACTION_KEY} Download TXT File Fail`;
+export const DOWNLOAD_TXT_FILE_SAVE_TYPE = `${PDF_EDIT_ACTION_KEY} Download TXT File Save`;
+
+export const downloadTxtFileAction = createAction(
+  DOWNLOAD_TXT_FILE,
+  props<{ projectName: string, projectId: number }>()
+);
+
+export const downloadTxtFileSuccessAction = createAction(
+  DOWNLOAD_TXT_FILE_SUCCESS_TYPE,
+  props<{ fileName: string, file: Blob }>()
+);
+
+export const downloadTxtFileFailAction = createAction(
+  DOWNLOAD_TXT_FILE_FAIL_TYPE,
+  props<{ message: MessageModel }>()
+);
+
+export const downloadTxtFileSaveAction = createAction(
+  DOWNLOAD_TXT_FILE_SAVE_TYPE
+);

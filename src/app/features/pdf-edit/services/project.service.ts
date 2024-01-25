@@ -17,4 +17,8 @@ export class ProjectService extends ApiService {
     return this.download(url);
   }
 
+  downloadTxtDocument(projectId: number): Observable<Blob> {
+    const url = `${this.baseUrl}/code/${projectId}`;
+    return this.download(url);
+  }
 }

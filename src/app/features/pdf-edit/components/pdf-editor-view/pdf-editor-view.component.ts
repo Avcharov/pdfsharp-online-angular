@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Outp
 import { ImageItem, TextItem } from '../../models/item';
 import * as pdfjsLib from 'pdfjs-dist';
 import { Store } from '@ngrx/store';
-import { downloadFileAction, updateImageItemsAction } from '../../store/pdf-edit.actions';
+import { downloadFileAction, downloadTxtFileAction, updateImageItemsAction } from '../../store/pdf-edit.actions';
 import { Subject, debounceTime } from 'rxjs';
 import { ProjectModel } from 'src/app/features/explorer/models/project-model';
 pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -358,6 +358,10 @@ export class PdfEditorViewComponent implements AfterViewInit {
 
   printDocument() {
     this.store.dispatch(downloadFileAction({projectName: this.project.name, projectId: this.project.id}));
+  }
+
+  printCode() {
+    this.store.dispatch(downloadTxtFileAction({projectName: this.project.name + "_PdfSharp_Code", projectId: this.project.id}));
   }
 
   queueRenderPage(num: number) {

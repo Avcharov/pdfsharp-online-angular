@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from "rxjs";
 import { MessageModel } from 'src/app/shared/models/message-model';
-import { addImageItemAction, addImageItemFailAction, addImageItemSuccessAction, deleteImageItemAction, deleteImageItemFailAction, downloadFileAction, downloadFileFailAction, downloadFileSaveAction, downloadFileSuccessAction, getImagesAction, getImagesFailAction, getImagesSuccessAction, updateImageItemsAction } from './pdf-edit.actions';
+import { addImageItemAction, addImageItemFailAction, addImageItemSuccessAction, deleteImageItemAction, deleteImageItemFailAction, downloadFileAction, downloadFileFailAction, downloadFileSaveAction, downloadFileSuccessAction, downloadTxtFileAction, downloadTxtFileFailAction, downloadTxtFileSaveAction, downloadTxtFileSuccessAction, getImagesAction, getImagesFailAction, getImagesSuccessAction, updateImageItemsAction } from './pdf-edit.actions';
 import { PdfEditService } from '../services/pdf-edit.service';
 import { DownloadService } from 'src/app/core/services/download.service';
 import { ProjectService } from '../services/project.service';
@@ -96,6 +96,32 @@ export class PdfEditEffects {
             map((props) => {
                 this.downloadService.save(props.fileName, props.file)
                 return downloadFileSaveAction()
+            })
+        )
+    );
+
+    downloadTxtFile = createEffect(() =>
+        this.actions.pipe(
+            ofType(downloadTxtFileAction),
+            mergeMap((props) => {
+                return this.projectService.downloadTxtDocument(props.projectId).pipe(
+                    map((file) => downloadTxtFileSuccessAction({ fileName: props.projectName, file })),
+                    catchError((errorResponse) => {
+                        const error = MessageModel.fromJson(errorResponse);
+                        return of(downloadTxtFileFailAction({ message: error }));
+                    })
+                );
+            }
+            )
+        )
+    );
+
+    downloadTxtFileSuccess = createEffect(() =>
+        this.actions.pipe(
+            ofType(downloadTxtFileSuccessAction),
+            map((props) => {
+                this.downloadService.save(props.fileName, props.file)
+                return downloadTxtFileSaveAction()
             })
         )
     );

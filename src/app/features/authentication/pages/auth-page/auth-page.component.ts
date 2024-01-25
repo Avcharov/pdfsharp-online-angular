@@ -74,6 +74,7 @@ export class AuthPageComponent implements OnInit {
 
   submitResetPasswordModal(resetPasswordObj: ResetPassword) {
     this.store.dispatch(confirmResetPasswordAction({ resetPasswordObj }));
+    this.closeResetPasswordModal();
   }
 
   deleteMessages() {
